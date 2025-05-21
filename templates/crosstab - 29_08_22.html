@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="openNav">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css"
+      integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+      <link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" />
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.3/xlsx.full.min.js"></script>-->
+  <script  src="{% static 'dist/js/common.js' %}"></script>
+  <!-- <script  src="{% static 'dist/js/xlsx.js' %}"></script> -->
+  <!--  <script  src="{% static 'dist/js/jszip.js' %}"></script>-->
+  <!-- <script  src="{% static 'dist/js/jquery.min.js' %}"></script> -->
+
+  <script>var csrftoken = '{{csrf_token}}';</script>
+
+
+    <title>Crosstab</title>
+    <style>
+      body {
+        font-family: "Work Sans", sans-serif;
+        margin: 0;
+        background-color: #eee;
+      }
+      /* Layout */
+
+      #container {
+        padding: 0;
+        margin: 0;
+        background-color: #fff;
+      }
+
+      #main {
+        padding: 4% 0.5em;
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      .btn-default {
+          border: solid 1px #ccc;
+      }
+      .wid .multiselect-container.dropdown-menu.show {
+          display: block;
+          width: 460px !important;
+      }
+      /*multisected css*/
+/*      .btn-default {
+    border: solid 1px #ccc;
+}
+.new-wrapper {
+    position: absolute;
+    left: 50px;
+    width: calc(100% - 50px);
+    transition: transform .45s cubic-bezier(0.77, 0, 0.175, 1);
+    background-color: #ededed;
+    min-height: 100vh;
+    height: auto;
+}*/
+
+/*testing css*/
+.dropdown-toggle {
+    position: relative;
+}
+
+.dropdown-toggle::after {
+    position: absolute;
+    right: 12px;
+    top: 13px;
+}
+
+.multiselect-container  > li {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+}
+
+.multiselect-container  > li > a > label {
+    padding: 0px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.multiselect-container  > li > a > label > input {
+    margin: 0px !important;
+}
+    </style>
+  </head>
+
+  <body class="bg-light">
+    <div class="new-wrapper">
+      <!-- top menu start -->
+
+      <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="../">
+                <i class="fas fa-abacus"></i> Home
+                <span class="sr-only">(current)</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% static 'download_cross_table_excel/cross_df.xlsx'%}" tabindex="-1" aria-disabled="true"
+                download="abc.xls">
+                <i class="fas fa-file-excel"></i></a>
+          </ul>
+        </div>
+
+      </nav>
+
+
+       
+
+      <!-- Main section start -->
+      <div id="main">
+        <div id="main-contents">
+
+          <div class="row mt-4 ">
+                        <div class="pl-3">
+                            <div class="form-inline " >
+                                <label for="example-post" class="mr-2">Row</label>
+                                <select id="rowfilter" class="w-75" name="multiselect[]" multiple="multiple">
+                                   <!--  <option value="Gender" selected>Gender</option>
+                                    <option value="Region">Region</option>
+                                    <option value="Age_Group">Age_Group</option>
+ -->
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pl-3">
+                            <div class="form-inline">
+                                <label for="example-post" class="mr-2">Column</label>
+                                <select id="columnfilter" name="multiselect[]" multiple="multiple">
+                                     <!-- <option value="Gender" selected>Gender</option>
+                                    <option value="Region" selected>Region</option>
+                                    <option value="Age_Group">Age_Group</option> -->
+                                </select>
+                            </div>
+                        </div>
+                         <div class="pl-3">
+                            <div class="form-inline">
+                                <label for="example-post" class="mr-2">Calculation Type</label>
+                                <select id="calculation_type" >
+                                     <option value="column_percent" selected>Column Percent</option>
+                                    <option value="row_percent" >Row Percent</option>
+                                    <option value="actual_count">Actual Count</option>
+                                    <option value="grand_total_count">Grand Total Percent</option>
+                                </select>
+                            </div>
+                        </div>
+                         <div class="pl-3">
+                            <div class="form-inline">
+                                <label for="example-post" class="mr-2">Weight Type</label>
+                                <select id="weight_type">
+                                     <option value="weighted" selected>Weighted</option>
+                                    <option value="unweighted" >Unweighted</option>
+                                </select>
+                            </div>
+                        </div>
+               </div>
+
+          <div class="row mt-5">
+            <div class="col-12">
+              <section id="cross_tab_data_table">
+               <!--  <table class="table table-striped border">
+
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Larry</td>
+                      <td>the Bird</td>
+                      <td>@twitter</td>
+                    </tr>
+                  </tbody> 
+                </table> -->
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <script  src="{% static 'dist/js/crosstab.js' %}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!--  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/all.min.js"
+      integrity="sha512-jAu66pqHWWQ564NS+m2Zxe13Yek98R7JWNjQLzW+PQ4i2jsMxBT1nGrQ0gFUIVJ4kPkEFe5gelBWNEDTBqmn/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- Multi Select Css & JS Start -->
+  <script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.min.js'  %}"></script>
+  <link rel="stylesheet" href="{% static 'dist/css/bootstrap-multiselect.css' %}">
+  <script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.js' %}"></script>
+
+
+    <script>
+      $(".nav-toggle").click(function (e) {
+        e.preventDefault();
+        $("html").toggleClass("openNav");
+        $(".nav-toggle").toggleClass("active");
+      });
+    </script>
+
+    <script>
+      $("#popup1").appendTo("body");
+      $("#popup2").appendTo("body");
+    </script>
+    <script>
+    $(document).ready(function() {
+        $('#rowfilter').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+             maxHeight: 200,
+              // widthSynchronizationMode: 'ifPopupIsWider',
+            buttonWidth: '200px'
+            // buttonContainer: '<div class="btn-group w-100" />'
+        });
+         
+        $('#columnfilter').multiselect({
+            includeSelectAllOption: true,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+        $('#calculation_type').multiselect({
+            includeSelectAllOption: false,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+        
+         $('#weight_type').multiselect({
+            includeSelectAllOption: false,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+
+    });
+</script>
+  </body>
+</html>

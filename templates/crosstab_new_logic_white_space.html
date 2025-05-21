@@ -1,0 +1,2027 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="openNav">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" />
+  <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'dist/css/custom.css' %}" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet_crosstab_page.css' %} " media="screen">
+
+  <link rel="stylesheet" href="{% static 'dist/right_click_style/right_click_style.css' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+  <!--     <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    /> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> -->
+  <!-- <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script> -->
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <script src="{% static 'dist/js/common.js' %}"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+
+  <script>var csrftoken = '{{csrf_token}}';</script>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js'></script>
+  <script src='https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.5/dist/chartjs-plugin-zoom.min.js'></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+  <script src="{% static 'dist/js/jquery-sortable-lists.js' %} "></script>
+  <!-- loader js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+  <!-- to disable right click ccomment this js  -->
+  <!-- <script src="{% static 'dist/right_click_style/right_click_script.js' %} "></script> -->
+
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script src="{% static 'dist/js/html2canvas.js' %} "></script> -->
+  <script src="{% static 'dist/js/sweetalert.min.js' %}" />
+  </script>
+  <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script> -->
+
+  <!-- ppt genx start -->
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.8.0/dist/pptxgen.bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.8.0/libs/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.8.0/dist/pptxgen.min.js"></script>
+  <!-- ppt genx end -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx-populate/1.21.0/xlsx-populate.min.js"
+    integrity="sha512-JVBz6zJ6cvcRjn7GayGJ/dsfYmykXq/O+BG5jqvCotbSkRd7pD/k0q/wqoIKEgXTh9lBxWoInk0DgrDhpXc9JA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <title>Dynamic ONE</title>
+  <style>
+    .tooltip {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .tooltip.show {
+        opacity: 1;
+    }
+    .break{
+      display: block;
+    }
+    .header_left_align{
+      text-align: left !important;
+    }
+    li a label {
+      color: black !important;
+    }
+
+    .header_div {
+      /* background-image: linear-gradient(to right, #C3282A, #3C6BE3); */
+    }
+
+    body {
+      margin: 0;
+      font-size: 10px !important;
+      background-color: rgb(0 0 0 / 81%) !important;
+      font-family: "Inter", sans-serif !important;
+    }
+
+    /* Layout */
+
+    #container {
+      padding: 0;
+      margin: 0;
+      background-color: #fff;
+    }
+
+    .logout_btn:hover {
+      /* background-image: linear-gradient(to right, #C3282A, #3C6BE3); */
+      background-color: #595959;
+      color: white;
+      border: none;
+      text-decoration: none;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: .25em .4em !important;
+      font-size: 75% !important;
+      font-weight: 700 !important;
+      line-height: 1;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: .25rem;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+      background-color: #dc3545 !important;
+    }
+
+    .style-2::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      background-color: #F5F5F5;
+    }
+
+    .style-2::-webkit-scrollbar {
+      width: 12px;
+    background-color: #F5F5F5;
+    height: 12px;
+    }
+
+    .style-2::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+      background-color: #cee0fc;
+    }
+
+    #main {
+      padding: 4% 0.5em;
+      max-width: 90%;
+      margin: 0 auto;
+    }
+
+    .btn-default {
+      border: solid 1px #ccc;
+    }
+
+    .wid .multiselect-container.dropdown-menu.show {
+      display: block;
+      width: 460px !important;
+    }
+
+    /*multisected css*/
+    /*      .btn-default {
+    border: solid 1px #ccc;
+    }
+    .new-wrapper {
+    position: absolute;
+    left: 50px;
+    width: calc(100% - 50px);
+    transition: transform .45s cubic-bezier(0.77, 0, 0.175, 1);
+    background-color: #ededed;
+    min-height: 100vh;
+    height: auto;
+    }*/
+
+    /*testing css*/
+    .dropdown-toggle {
+      position: relative;
+    }
+
+    .dropdown-toggle::after {
+      position: absolute;
+      right: 5px;
+      top: 10px;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 00% !important;
+      left: -50px !important;
+      z-index: 1000;
+      display: none;
+      float: left;
+      min-width: 10rem;
+      padding: .5rem 0;
+      margin: .125rem 0 0;
+      font-size: 13px !important;
+      color: #212529;
+      text-align: left;
+      list-style: none;
+      background-color: #fff;
+      background-clip: padding-box;
+      border: 1px solid rgba(0, 0, 0, .15);
+      border-radius: .25rem;
+      padding: 0px !important;
+    }
+
+    .bcst-theme h4 {
+      font-family: inherit;
+      line-height: 1.2;
+      font-size: 1.4em !important;
+      font-weight: 800;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      /* font-weight: normal;
+    font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+    color: #b5e853; */
+      letter-spacing: -0.03em;
+      /* Ntext-shadow: 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 5px rgba(181, 232, 83, 0.1), 0 0 10px rgba(181, 232, 83, 0.1); */
+    }
+
+    .multiselect-container>li {
+      padding-top: 5px !important;
+      padding-bottom: 5px !important;
+      padding-left: 5px !important;
+    }
+
+    .multiselect-container>li>a>label {
+      padding: 0px !important;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: center;
+    }
+
+    .multiselect-container>li>a>label>input {
+      margin: 0px !important;
+    }
+
+    .blue-theme .bg-info {
+      background-color: #71aae6 !important;
+    }
+
+    .red-theme .bg-info {
+      background-color: #f04a46 !important;
+    }
+
+    .bcst-theme .bg-info {
+      background-color: #e0e1dd !important;
+      color: #000 !important;
+      border-color: #ccc;
+      position: sticky;
+      left: 22px;
+    }
+
+    .right-scroller {
+      background-color: #e0e1dd !important;
+      color: #000 !important;
+      border-color: #ccc !important;
+      position: sticky !important;
+      left: 17px !important;
+    }
+
+    .bcst-theme .table .thead-dark th {
+      color: #fff;
+      background-color: #3C6BE3 !important;
+      border-color: #ccc !important;
+      padding: 1px;
+/*      min-width: 192px;*/
+      min-width: 140px;
+      vertical-align: middle !important;
+    }
+
+    #weight_volume_type_div button {
+      padding: 0.1rem 0.5rem;
+      font-size: .875rem;
+      line-height: 1.5;
+      border-radius: 0.2rem;
+      font-size: 12px;
+    }
+
+    .total_colum .multiselect-native-select .btn-group {
+      width: 100px !important;
+    }
+
+    .table {
+      width: 100% !important;
+      margin-bottom: 1rem;
+      color: #212529;
+      font-size: 11px !important;
+    }
+
+    /* .caret{
+      margin-left:15px !important;
+    } */
+    .btn {
+      display: inline-block;
+      font-weight: 300;
+      color: #212529;
+      text-align: left;
+      vertical-align: middle;
+      cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      background-color: transparent;
+      /* border: 1px solid #002366; */
+      padding: 0.275rem 0.4rem;
+      font-size: 12px;
+      line-height: 1;
+      border-radius: 0.25rem;
+      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .accordion_1 {
+      background-color: rgba(0, 0, 0, .03) !important;
+    }
+
+    .btn-group button {
+      < !-- min-width: 120px !important;-->
+      < !-- max-width: 200px !important;-->
+    }
+
+    .form-group {
+      margin-bottom: 0.2rem !important;
+    }
+
+    table td,
+    .table th {
+      padding: .2rem !important;
+      vertical-align: top;
+      border-top: 1px solid #dee2e6;
+    }
+
+    .label_width {
+      width: 100% !important;
+    }
+
+    /* plus minus css start  */
+    .qty .count {
+      color: #000;
+      display: inline-block;
+      vertical-align: top;
+      font-size: 25px;
+      font-weight: 700;
+      line-height: 30px;
+      padding: 0 2px;
+      min-width: 35px;
+      text-align: center;
+    }
+
+    .qty .plus {
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: top;
+      color: white;
+      width: 20px;
+      height: 20px;
+      font: 20px/1 Arial, sans-serif;
+      text-align: center;
+      border-radius: 50%;
+    }
+
+    /* th{
+      width: 100px !important;
+    } */
+    .qty .minus {
+      cursor: pointer;
+      display: inline-block;
+      vertical-align: top;
+      color: white;
+      width: 20px;
+      height: 20px;
+      font: 20px/1 Arial, sans-serif;
+      text-align: center;
+      border-radius: 50%;
+      background-clip: padding-box;
+    }
+
+    < !--.minus:hover {
+      -->< !-- background-color: #717fe0 !important;
+      -->< !--
+    }
+
+    -->< !--.plus:hover {
+      -->< !-- background-color: #717fe0 !important;
+      -->< !--
+    }
+
+    -->h4 {
+      line-height: 1.2;
+      font-size: 1em !important;
+      font-weight: 800;
+    }
+
+    .btn-danger {
+      color: #fff;
+      background-color: #415A77;
+      border-color: #415A77;
+    }
+
+    .btn-danger:hover {
+      color: #fff;
+      background-color: #4771a1;
+      border-color: #4771a1;
+    }
+
+    .overflow-container-main {
+      position: relative;
+      height: calc(86vh - 0px) !important;
+      overflow-y: auto;
+      /* border-top: 53px solid #f7f7f7; */
+      z-index: -1;
+      display: block;
+      background-color: #fff !important;
+    }
+
+    .btn-danger:not(:disabled):not(.disabled).active,
+    .btn-danger:not(:disabled):not(.disabled):active,
+    .show>.btn-danger.dropdown-toggle {
+      color: #fff;
+      background-color: #4771a1;
+      border-color: #4771a1;
+    }
+
+    .vl {
+      border-left: 4px solid white;
+      height: 40px;
+      border-radius: 0px;
+    }
+
+    #example2-left li,
+    #example2-right li,
+    #sTree3 li,
+    #sTreePlus li,
+    ul#s-l-base li {
+      padding-left: 35px;
+      /*    margin: 1px;
+    border: 1px solid #ffffff;
+    background-color: #e0e1dd;*/
+    }
+
+    .list-group-item {
+      /*  position: relative;
+    display: block;
+    padding: 0.5rem 0.25rem;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);*/
+      position: relative;
+      display: block;
+      padding: 0.1rem 0.25rem;
+      background-color: #8D8D8D;
+      border: 1px solid rgba(0, 0, 0, .125);
+    }
+
+    label {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      font-weight: 700 !important;
+    }
+
+    .container-height {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .div1-height, .div2-height, .div3-height {
+    flex-grow: 1;
+  }
+
+    .multiselect-container>li>a.multiselect-all label {
+      font-weight: 700;
+      font-size: 11px;
+      < !-- padding-left: 10px !important;
+      -->
+    }
+
+    .multiselect-container>li>a>label>input {
+      margin: 0px !important;
+      /* padding-right: 5px !important; */
+      margin-right: 5px !important;
+    }
+
+    .multiselect-container>li.multiselect-group label {
+      margin: 0;
+      padding: 3px 20px;
+      height: 100%;
+      font-weight: 400;
+      font-size: 11px;
+    }
+
+    .multiselect-container>li>a>label {
+      margin: 0;
+      height: 100%;
+      cursor: pointer;
+      font-weight: 400;
+      font-size: 11px;
+      /* padding: 3px 20px 3px 40px; */
+    }
+
+    .search_hidden_btn .input-group-btn {
+      display: none !important;
+    }
+
+    .multiselect-container .input-group {
+      margin: 5px;
+      background-color: transparent;
+      margin-right: 10px !important;
+      padding-right: 12px;
+      padding-left: 0px;
+      /* width: 200px; */
+    }
+
+    .hide_class {
+      display: none;
+    }
+
+    .show_class {
+      display: block;
+    }
+
+    .row_l1 {
+      position: sticky !important;
+      left: -16px !important;
+    }
+
+    .row_l3 {
+      position: sticky;
+      left: 73px !important;
+      < !-- left: 78px !important;
+      -->
+    }
+
+    button:focus {
+      outline: 1px dotted;
+      outline: 0px auto -webkit-focus-ring-color !important;
+    }
+
+    .dropdown-menu {
+      position: absolute !important;
+      z-index: 1111 !important;
+    }
+
+    @media (min-width: 576px) {
+      .modal-dialog {
+        max-width: 670px !important;
+        margin: 1.73rem auto;
+      }
+    }
+
+    .accordion-container {
+      position: relative;
+      /* max-width: 500px; */
+      height: auto;
+      margin: 10px auto;
+    }
+
+    /* .accordion-container > h2{
+  text-align: center;
+  color: #fff;
+  padding-bottom: 5px;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+} */
+    .set {
+      position: relative;
+      width: 100%;
+      height: auto;
+      background-color: #f5f5f5;
+    }
+
+    .set>a {
+      display: block;
+      padding: 10px 15px;
+      text-decoration: none;
+      color: #555;
+      font-weight: 600;
+      border-bottom: 1px solid #ddd;
+      -webkit-transition: all 0.2s linear;
+      -moz-transition: all 0.2s linear;
+      transition: all 0.2s linear;
+    }
+
+    .set>a i {
+      float: right;
+      margin-top: 2px;
+    }
+
+    .set>a.active {
+      background-image: linear-gradient(to right, #C3282A, #3C6BE3);
+      color: #fff;
+    }
+
+    .content {
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      display: none;
+    }
+
+    .content p {
+      padding: 10px 15px;
+      margin: 0;
+      color: #333;
+    }
+
+    .nav_tabs_favourite.active {
+      color: #ffffff !important;
+      /* background-color: #fff; */
+      background-image: linear-gradient(to right, #C3282A, #3C6BE3) !important;
+    }
+
+    .accordion_scrollbar {
+      overflow-y: scroll;
+      height: 257px;
+    }
+
+
+  </style>
+</head>
+
+<body class=" bcst-theme" style="overflow: hidden;">
+
+  <ul class="context">
+    <li class="top">
+      <svg class="f f-edit-3" width="1" height="1">
+        <use xlink:href="#edit-3"></use>
+      </svg><i>Total Column</i>
+      <svg class="f f-chevron-right" width="24" height="24">
+        <use xlink:href="#chevron-right"></use>
+      </svg>
+      <ul class="context sub">
+        <li title="Chosen: Red" id="Total_column_disable" class="Total_column_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="Total_column" id="Total_column2" checked value="0">
+            <label class="form-check-label" for="Total_column2">
+              Disable
+            </label>
+          </div>
+        </li>
+        <li title="Chosen: Xtra Large" id="Total_column_enable" class="Total_column_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="Total_column" id="Total_column1" value="1">
+            <label class="form-check-label" for="Total_column1">
+              Enable
+            </label>
+          </div>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <svg class="f f-share-2" width="24" height="24">
+        <use xlink:href="#share-2"></use>
+      </svg>Calculation type
+      <svg class="f f-chevron-right" width="24" height="24">
+        <use xlink:href="#chevron-right"></use>
+      </svg>
+      <ul class="context sub">
+        <li title="Chosen: Red" class="calculation_type_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="calculation_type" id="calculation_type1"
+              value="column_percent">
+            <label class="form-check-label" for="calculation_type1">
+              Column %
+            </label>
+          </div>
+        </li>
+        <li title="Chosen: Xtra Large" class="calculation_type_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="calculation_type" id="calculation_type2"
+              value="row_percent">
+            <label class="form-check-label" for="calculation_type2">
+              Row %
+            </label>
+          </div>
+        </li>
+        <li title="Chosen: Xtra Large" class="calculation_type_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="calculation_type" id="calculation_type2"
+              value="table_percent">
+            <label class="form-check-label" for="calculation_type2">
+              Table %
+            </label>
+          </div>
+        </li>
+        <li title="Chosen: Xtra Large" class="calculation_type_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="calculation_type" id="calculation_type3"
+              value="actual_count" checked>
+            <label class="form-check-label" for="calculation_type3">
+              Actual Count
+            </label>
+          </div>
+        </li>
+        <!-- <li title="Chosen: Xtra Large"  class="calculation_type_filter1 condition_dropdown">
+        <div class="form-check">
+        <input class="form-check-input tcd" type="radio" name="calculation_type" id="calculation_type4" value="Indices">
+        <label class="form-check-label" for="calculation_type4">
+          Indices
+        </label>
+      </div>
+      </li>
+       <li title="Chosen: Xtra Large"  class="calculation_type_filter1 condition_dropdown">
+        <div class="form-check">
+        <input class="form-check-input tcd" type="radio" name="calculation_type" id="calculation_type5" value="Significance">
+        <label class="form-check-label" for="calculation_type5">
+          Significance
+        </label>
+      </div>
+      </li>
+      -->
+      </ul>
+    </li>
+    <li>
+      <svg class="f f-share-2" width="24" height="24">
+        <use xlink:href="#share-2"></use>
+      </svg>Weight Type
+      <svg class="f f-chevron-right" width="24" height="24">
+        <use xlink:href="#chevron-right"></use>
+      </svg>
+      <ul class="context sub">
+        <li title="Chosen: Red" class="weight_type_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="weight_type" id="weight_type1" checked
+              value="weighted">
+            <label class="form-check-label" for="weight_type1">
+              Weighted
+            </label>
+          </div>
+        </li>
+        <li title="Chosen: Xtra Large" class="weight_type_filter1">
+          <div class="form-check">
+            <input class="form-check-input tcd" type="radio" name="weight_type" id="weight_type2" value="unweighted">
+            <label class="form-check-label" for="weight_type2">
+              Unweighted
+            </label>
+          </div>
+        </li>
+      </ul>
+    </li>
+
+    <!-- <li>
+    <svg class="f f-share-2" width="1" height="1">
+      <use xlink:href="#share-2"></use>
+    </svg>Measure
+    <svg class="f f-chevron-right" width="1" height="1">
+      <use xlink:href="#chevron-right"></use>
+    </svg>
+    <ul class="context sub"> 
+      <li title="Chosen: Red" class="weight_volume_type1">
+        <div class="form-check">
+        <input class="form-check-input tcd" type="radio" name="weight_volume_type" id="weight_volume_type1" checked value="People">
+        <label class="form-check-label" for="weight_volume_type1">
+          People
+        </label>
+      </div>
+      </li>
+    </ul>
+  </li> -->
+
+
+    <!--  <li>
+    <svg class="f f-copy" width="24" height="24">
+      <use xlink:href="#copy"></use>
+    </svg>Copy <i>l</i>ink1
+  </li>
+  <li>
+    <svg class="f f-image" width="24" height="24">
+      <use xlink:href="#image"></use>
+    </svg><i>V</i>iew image
+  </li>
+  <li>
+    <svg class="f f-settings" width="24" height="24">
+      <use xlink:href="#settings"></use>
+    </svg>Settin<i>g</i>s
+  </li> -->
+  </ul>
+
+  <div class="row header_div" style="background-color: black;">
+    <div class="col-2 d-flex pl-4">
+      <button href="#" class="bg-transparent hamburger nav-toggle open-panel pl-3 text-white"></button>
+      <span class="screen-reader-text">Menu</span>
+      <a href="#" class="logotype">
+        <!--                BSW <span>CrossDash</span>-->
+        <img src="{% static 'dist/img/bcst-logo2.png' %}" class="m-3">
+        <!--                <img src="static/dist/">-->
+      </a>
+
+    </div>
+
+    <div class="col-md-1 d-flex justify-content-center mt-1">
+      <div class="ml-5 mt-1 mt-2 vl"></div>
+    </div>
+    <div class="col-md-4 mt-3 p-0">
+      <h3 class="mt-1 text-white" style="font-size:21px">Dynamic ONE</h3>
+      <!-- <nav aria-label="breadcrumb">
+          <ol class="breadcrumb p-0">
+            <li class="breadcrumb-item"><a href="#" class="text-white"><i class="fa fa-home" aria-hidden="true"></i></a></li>
+            <li class="breadcrumb-item"><a href="#" class="text-white">Library</a></li>
+            <li class="breadcrumb-item text-white" aria-current="page">Data</li>
+          </ol>
+        </nav> -->
+    </div>
+    <div class="col-md-5 d-flex justify-content-end" style="align-items: center;">
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-warning text-white h-50 mt-lg-0 shadow" data-toggle="modal"
+        data-target="#exampleModal1" style="background-color: #0d6efd;border: none;">
+        <i class="fa fa-bookmark mx-1" aria-hidden="true"></i>Add To Favourites
+      </button>
+
+      <button type="button" class="btn btn-warning color-white h-50 mt-lg-0 shadow mx-3" data-toggle="modal"
+        data-target="#exampleModal"
+        style="color: white !important; cursor: pointer;background-color: #0d6efd;border: none;"
+        onclick="Recently_added_view();"><i class="fa fa-star mx-1" aria-hidden="true" style="color: #FFD700;"></i>
+        View Favourites
+      </button>
+
+
+
+      <!-- your details modal start -->
+
+      <div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel1"><i class="fa fa-bookmark" aria-hidden="true"></i> Add to
+                Favourites</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group mt-3 d-flex">
+                  <label for="exampleFormControlTextarea1" style="width: 106px;align-content: center;">Enter View
+                    Name</label>
+                  <input type="text" name="add_to_favourite_name" class="form-control h-25 w-50"
+                    id="add_to_favourite_name" value="" aria-describedby="text" required>
+                </div>
+                <!-- <div class="d-flex mt-3">
+                  <label>Comments:</label>
+                  <textarea rows="8" cols="50" name="comment" form="usrform" class="ml-5 mx-4 w-50" style=""></textarea>
+                </div> -->
+                <input type="button" class="btn btn-primary" value="Save" id="Add_to_favourite"
+                  style="background-color: #0d6efd;">
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- your details modal end -->
+
+      <!--favourite Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <i class="fa fa-star mr-2 mt-1 mx-1" aria-hidden="true" style="color: #FFD700;font-size: 20px;"></i>
+              <h5 class="modal-title" id="exampleModalLabel">View Favourites</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <div>
+
+                <div class="row" style="border-bottom: 1px solid grey;padding: 5px;">
+                  <div class="col-md-6">
+                    <h4>Recently Added</h4>
+                  </div>
+                  <div class="align-content-md-center col-md-6 text-right">
+                    <span class="badge badge-danger" id="clear_all_recent_view"
+                      onclick="Delete_recently_added_view('delete_all')" ;
+                      style="font-size: 100% !important;cursor: pointer;">Clear All</span>
+                  </div>
+                </div>
+                <div class="accordion mt-3 accordion_scrollbar" id="accordionExample">
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- username -->
+      <p class="text-white " style="font-size: 16px;font-weight: 600;"> {{ request.user.username|capfirst }}</p>
+      <div class="dropdown">
+        <button class="border-0 btn btn-secondary dropdown-toggle p-0 px-4 rounded text-white" type="button"
+          data-toggle="dropdown" aria-expanded="false"
+          style="color: black; background-color: transparent !important;font-size: 30px;">
+          <i class="fa fa-user-circle-o mr-2" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu ml-4">
+          <a href="../logout"><button class="dropdown-item logout_btn" type="button"
+              style="font-size: 12px; font-weight: 600;"><i class="fa fa-sign-out pr-2" aria-hidden="true"></i>Logout</button></a>
+         <!--  <a href="http://apps.brand-scapes.com/onedashboard/logout"><button class="dropdown-item logout_btn" type="button"
+              style="font-size: 12px; font-weight: 600;"><i class="fa fa-sign-out pr-2" aria-hidden="true"></i>Logout</button></a> -->
+
+          <!-- <button class="dropdown-item" type="button">Another action</button>
+            <button class="dropdown-item" type="button">Something else here</button> -->
+        </div>
+      </div>
+
+      <!-- <p class="mt-2 p-3"><a href="logout" style="text-align: end;
+          color: black!important;">Logout</a></p> -->
+    </div>
+  </div>
+
+  <div class="primary-nav">
+    <!-- open close button -->
+    <!-- <button href="#" class="hamburger open-panel nav-toggle active">
+      <span class="screen-reader-text">Menu</span> -->
+    <!-- </button> -->
+    <nav role="navigation" class="menu">
+
+      <!-- <a href="#" class="logotype">
+               BSW <span>CrossDash</span>
+                <img src="{% static 'dist/img/bcst-logo1.png' %}" class="img-fluid mt-3">
+               <img src="static/dist/">
+            </a> -->
+      <div class="hide" id="base_column_value"></div>
+      <div class="overflow-container-main  rounded-0 mt-2">
+        <div id="shared-lists" class="px-1">
+          <div class="row mt-2">
+            <div class="col-12 mb-3">
+              <p class="mb-0 text-dark">Selected Database :- <span class="badge badge-danger"
+                  id="selected_DB_name">--</span></p>
+              <p class="p-2 rounded shadow" style="background-color: #0d6efd;color: white;"><i
+                  class="fa fa-check-square-o" aria-hidden="true"></i>
+                <span id="selected_filename" data-selectedfilename="">--</span>
+              </p>
+            </div>
+            <div class="col-12 mb-3">
+              <p class="text-dark">Row Variable
+                <span class="badge badge-danger" id="row_clear">Clear</span>
+              </p>
+
+              <ul id="example2-left" class="example2-left list-group col mt-1">
+
+              </ul>
+            </div>
+            <div class="col-12 mb-3">
+              <p class="text-dark">Column Variable
+                <span class="badge badge-danger" id="col_clear">Clear</span>
+              </p>
+              <ul id="example2-right" class="example2-right list-group col mt-1">
+
+              </ul>
+            </div>
+            <div class="col-12 mb-3">
+              <p class="text-dark" id="other_variable_id">Other Variable</p>
+              <ul id="example33" class="list-group col mt-1">
+
+              </ul>
+            </div>
+          </div>
+
+          <div id="simple-list" class="row" style="display: none;">
+            <h4 class="col-12">Simple list example</h4>
+            <div id="example1" class="list-group col">
+              <div class="list-group-item">Item 1</div>
+            </div>
+          </div>
+          <div class="hide" id="store_unique_column_name"></div>
+
+
+          <div class="row">
+            <div class="col-12 text-right">
+              <button type="button" class="btn btn-primary" id="toArrBtn"
+                style="background-color: #0d6efd;">Run</button>
+              <!-- <button type="button" class="btn btn-primary" id="reset_fun" onclick="reset_right_menu_list(this);" style="background-color: #0d6efd;">
+                Reset</button> -->
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </nav>
+
+
+
+  </div>
+
+
+
+
+  <div class="crosstab-page">
+    <!--top header start-->
+    <!--         <div class="bg-white sticky-top">
+            <h4 class="border-left pb-2 pt-3 px-2 text-primary">Brandscapes Sales Tracker</h4>
+        </div> -->
+    <!-- <div class="bg-white d-flex justify-content-between sticky-top">
+        <h4 class="border-left p-3 text-primary">BrandScapes Sales Tracker</h4>
+        <p class="mt-3 pt-1" style="color: white;"><b>Hi {{request.user.username|capfirst}}</b></p>
+        <p class="p-3"><a href="../logout" style="text-align: end;
+            color: black!important;">Logout</a></p>
+        </div> -->
+
+    <div id="dropdown_range_filter" class="d-none"></div>
+    <div id="grand_total_index_array" class="d-none"></div>
+    <div id="selected_facts_colorizer_name" class="d-none"></div>
+    <div id="stored_json_response_data" class="d-none"></div>
+    <!-- Main section start -->
+
+    <div id="main" class="mx-2 px-0">
+      <!-- <div class="m-1 mt-2 p-2 d-none" style="background: #ffffffbf;" id="refresh_your_data_div">
+        <button type="button" class="border-0 btn btn-success bg-success mx-1 sga shadow-lg text-white"  id="refresh_your_data"><i class="fa fa-refresh mx-1" aria-hidden="true"></i> Refresh your Data</button>
+      </div> -->
+      <div id="main-contents" class="container-height">
+        <div class="bg-white m-1 mt-2 p-2 row div1-height">
+          <div class="col-md-11">
+            <div class="row">
+              <div class="col-md-2">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0">Metrics</label><br>
+                  <!-- <label for="example-post" class="mr-2 mb-0">Facts</label><br> -->
+                  <select id="facts_group_filter" multiple="multiple" style="width:fit-content !important;">
+                    <!--  <optgroup label="Programming Languages">
+                            <option value="Java">Java</option>
+                            <option value="csharp">C#</option>
+                            <option value="Python">Python</option>
+                        </optgroup>
+                        <optgroup label="Databases">
+                            <option value="MySQL">MySQL</option>
+                            <option value="Oracle">Oracle</option>
+                            <option value="MSSQL">MS SQL Server</option>
+                        </optgroup>  -->
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-2 pl-0 pl-2">
+                <div class="px-0" id="time_range_filter">
+                  <div class="form-group search_hidden_btn">
+                    <label for="example-post" class="mr-2 mb-0">Time Range</label><br>
+                    <select id="time_range" name="time_range">
+                      <option value="QUARTER" selected>Quarter</option>
+                      <option value="YTD">YTD</option>
+                      <option value="MAT">MAT</option>
+                      <option value="HY">Half Yearly</option>
+                      <option value="FY">FY</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 pl-0 pl-2">
+                <div class="px-0" id="time_period_filter">
+                  <div class="form-group search_hidden_btn">
+                    <label for="example-post" class="mr-2 mb-0">Selected Time Period</label><br>
+                    <select id="time_period" name="time_period">
+                      <!-- <select id="time_period" name="time_period" multiple="multiple"> -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2 p-0">
+                <div class="px-0" id="time_period_filter">
+                  <div class="form-group search_hidden_btn">
+                    <label for="example-post" class="mr-2 mb-0">Comparative Time Period</label><br>
+                    <select id="comparison_time_period" name="comparison_time_period">
+                      <!--  <option value="MySQL">MySQL</option>
+                              <option value="Oracle">Oracle</option>
+                              <option value="MSSQL">MS SQL Server</option> -->
+                    </select>
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-md-4 p-0 d-flex">
+                <div class="px-0" id="time_period_filter">
+                  <div class="form-group search_hidden_btn">
+                    <label for="example-post" class="mr-2 mb-0">Currency</label><br>
+                    <select id="currency_type" name="currency">
+
+                      <option selected value="millions">Millions</option>
+                      <option value="thousands">Thousands</option>
+                    </select>
+
+                  </div>
+                </div>
+
+                <a type="button" class="btn fa-1x ml-2 mt-2 nav-link p pl-0 pr-0" id="clickbtn" data-toggle="tooltip"
+                  data-placement="top" title="Measure in Row">
+                  <p class="d-none" id="hiddevalue">measure_in_column</p>
+                  <!-- <i id="icon" class="fa fa-level-up mt-1 pt-3 text-body"></i> -->
+                  <i id="icon" class="fa fa-level-up mt-1 pt-3 text-body d-none"></i>
+                  <img src="/static/dist/img/up-chevron.png" class="" id="updown_toggle">
+                </a>
+                <div class="mt-3 mx-2 d-flex">
+                  <span class="minus" data-toggle="tooltip" data-placement="top" title="Reduce Decimal"><img
+                      src="/static/dist/img/plus_decimal.png" class=""></span>
+                  <input type="number" class="count d-none" name="qty" value="1" id="decimal_filter">
+                  <p class="d-none" id="counter">0</p>
+                  <span class="plus ml-1" data-toggle="tooltip" data-placement="top" title="Increase Decimal"><img
+                      src="/static/dist/img/minus_decimal.png" class=""></span>
+                </div>
+                <!-- <div id="chart_div">
+                          <a class="fa-1x mt-2 nav-link pl-0 pr-2" tabindex="-1" aria-disabled="true"
+                          data-toggle="tooltip" data-placement="top" title="View Charts">
+                          <img src="/static/dist/img/charts.png" class="img-fluid mt-2">
+                          </a>
+                        </div> -->
+
+                <div class="dropdown ml-2 mt-2">
+                  <a class="btn btn-secondary mt-2 p-0 pt-1" data-toggle="modal" data-target="#facts_colorizer1"
+                    href="#" role="button" data-toggle="dropdown" aria-expanded="false"
+                    onclick="display_facts_colorizer_values();"
+                    style="width: 102px !important;height: 22.78px !important; text-align: center;">Metrics
+                    Colorizer</a>
+                  <!-- Facts Colorizer old name -->
+
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-1 d-flex justify-content-end">
+            <div>
+              <!-- onclick="tableToExcel('crosstab_data_xls_download', 'Sheet1')"  -->
+              <a class="nav-link fa-1x py-0 px-0 text-black pt-3" onclick="check_lenght_tableToExcel()"
+                value="Export to Excel" data-html="true"
+                title="<p class='mb-0'><b>Export Excel New</b></p><hr class='my-0'><p><small>Export data to excel.<small></p>"
+                data-toggle="tooltip" data-placement="top" title="Excel Download">
+                <img src="/static/dist/img/xls.png" class="img-fluid w-75">
+              </a>
+            </div>
+            <!-- <div  class="px-2">
+                <a class="nav-link fa-1x py-0 px-0 text-black pt-3" onclick="tableToPDF('crosstab_data_xls_download', 'Sheet1.pdf')" tabindex="-1" aria-disabled="true"
+                data-toggle="tooltip" data-placement="top"  data-html="true"  title="<p class='mb-0'><b>Export PDF</b></p><hr class='my-0'><p><small>Export data to pdf.<small></p>">
+                <img src="/static/dist/img/pdf.png" class="img-fluid w-75">
+              </a>
+              </div> -->
+            <!-- <div>
+              <a class="nav-link fa-1x py-0 px-0 text-black pt-3" onclick="tableToImage('crosstab_data', 'Sheet1.png')" tabindex="-1" aria-disabled="true"
+              data-toggle="tooltip" data-placement="top"  data-html="true"  title="<p class='mb-0'><b>Export Image</b></p><hr class='my-0'><p><small>Export data to image.<small></p>">
+              <img src="/static/dist/img/image.png" class="img-fluid w-75">
+            </a>
+            </div> -->
+          </div>
+        </div>
+
+
+
+
+        <div class="bg-white m-1 mt-2 p-2 row div2-height" id="display_filter_section">
+          <div class="bg-white col-10">
+            <div class="row">
+              <div class="col-2 d-none" id="filter_div1">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter1"></label><br>
+                  <select id="filter1" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+              <div class="col-2 d-none" id="filter_div_brandindex">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter1_brandindex">Compare With</label><br>
+                  <select id="filter1_brandindex" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+              <div class="col-2 d-none" id="filter_div2">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter2"></label><br>
+                  <select id="filter2" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+              <div class="col-2 d-none" id="filter_div3">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter3"></label><br>
+                  <select id="filter3" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div4">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter4"></label><br>
+                  <select id="filter4" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div5">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter5"></label><br>
+                  <select id="filter5" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div6">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter6"></label><br>
+                  <select id="filter6" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div7">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter7"></label><br>
+                  <select id="filter7" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div8">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter8"></label><br>
+                  <select id="filter8" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div9">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter9"></label><br>
+                  <select id="filter9" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-2 d-none" id="filter_div10">
+                <div class="form-group search_hidden_btn">
+                  <label for="example-post" class="mr-2 mb-0 filter10"></label><br>
+                  <select id="filter10" name="multiselect[]" multiple="multiple">
+                  </select>
+                </div>
+              </div>
+
+
+              <!-- <div class="col-2 " id="">
+                <div class="custom-control custom-switch">
+                  <label for="example-post" class="mr-2 mb-0 "></label><br>
+                  <input type="checkbox" data-toggle="tooltip" data-placement="top" title="Grand Total All" class="custom-control-input" id="display_grand_total_flag" onclick="display_grand_total_flag(this);">
+                  <label class="custom-control-label" for="display_grand_total_flag" id="display_grand_total_flag_label">Grand Total All</label>
+                </div>
+              </div> -->
+              <div class="col-2">
+                  <div class="custom-control custom-switch" >
+                      <label for="example-post" class="mr-2 mb-0"></label><br>
+                      <input type="checkbox"  class="custom-control-input" id="display_grand_total_flag" onclick="display_grand_total_flag();">
+                      <label class="custom-control-label" for="display_grand_total_flag" id="display_grand_total_flag_label">Grand Total All</label>
+                      <!-- <label class="custom-control-label" for="display_grand_total_flag" id="display_grand_total_flag_label">Market Total</label> -->
+                  </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="col-md-2">
+
+          
+
+            <div class="col d-flex justify-content-end mt-xl-n2" id="filter_submit_div">
+              <div class="form-group">
+                <label for="example-post" class="mr-2 mb-0 hide"></label><br>
+                <button type="button" class="btn btn-primary mt-2" id="filter_submit"
+                  style="background-color: #0d6efd;">Clear Filter</button>
+              </div>
+            </div>
+          </div>
+        </div>
+         <!-- filter section end here -->
+
+
+        <div class="col row my-2 p-1 rounded ml-3">
+
+          <div class="bg-white col p-3 rounded row div3-height">
+            <div class="col-12 table-responsive style-2"">
+              <!-- style="min-height:200px; max-height: 53vh;width: 99%;overflow-x: scroll;"> -->
+              <div id="facts_coorizer_div_array" class="d-none"></div>
+              <div class="d-none" id="table_column_lenght"></div>
+              <section id="cross_tab_data_table">
+
+                <table class="table table-striped border">
+                </table>
+              </section>
+
+
+              <section id="cross_tab_data_table_xls_download" style="display:none;">
+                <table class="table table-striped border">
+                </table>
+              </section>
+            </div>
+
+            <div class="col-md-12 d-flex justify-content-end ml-2 px-4">
+              <div class="row">
+                <div class=""></div>
+                
+                  <div class="px-3 row">
+                    <div class="px-2" id="BPS_footnote">
+                      <p class="">BPS</p>
+                      <div class="btn-group shadow" role="group" aria-label="Basic example" id="defslut_color_bps">
+                        <button type="button" class="bg-danger btn btn-secondary text-white"><=-30</button>
+                            <button type="button" class="bg-warning btn btn-secondary text-black">Between</button>
+                            <button type="button" class="bg-success btn btn-secondary text-white">>=+30</button>
+                      </div>
+                      <div class="btn-group shadow" role="group" aria-label="Basic example" id="custom_color_bps"
+                        style="display:none;">
+                        <button type="button" class="bg-danger btn btn-secondary text-white"
+                          id="custom_color_bps_1"></button>
+                        <button type="button" class=" btn btn-secondary text-black" id="custom_color_bps_2"
+                          style="background-color:#FFBF00">Between</button>
+                        <button type="button" class="bg-success btn btn-secondary text-white"
+                          id="custom_color_bps_3"></button>
+                      </div>
+                    </div>
+                    <div class="" id="GR_footnote">
+                      <p class="">GR%</p>
+                      <div class="btn-group shadow" role="group" aria-label="Basic example">
+                        <button type="button" class="bg-danger btn btn-secondary text-white">Negative</button>
+                        <button type="button" class="bg-success btn btn-secondary text-white">Positive</button>
+                        <!-- <button type="button" class="bg-success btn btn-secondary text-white">>=+30</button> -->
+                      </div>
+                    </div>
+                  </div>
+                
+              </div>
+            </div>
+
+          </div>
+
+
+        </div>
+
+
+
+        <br>
+        <div class="hide" id="filter_data_object"></div>
+
+
+
+
+        <!-- 
+<div class="container" >
+  
+    <div id="shared-lists" class="row">
+      <h4 class="col-12">Shared lists</h4>
+      <div id="example2-left" class="list-group col">
+        <div class="list-group-item">Item 11</div>
+        <div class="list-group-item">Item 12</div>
+        <div class="list-group-item">Item 13</div>
+        <div class="list-group-item">Item 14</div>
+        <div class="list-group-item">Item 15</div>
+        <div class="list-group-item">Item 16</div>
+      </div>
+
+      <div id="example2-right" class="list-group col">
+        <div class="list-group-item tinted">Item 21</div>
+        <div class="list-group-item tinted">Item 22</div>
+        <div class="list-group-item tinted">Item 23</div>
+        <div class="list-group-item tinted">Item 24</div>
+        <div class="list-group-item tinted">Item 25</div>
+        <div class="list-group-item tinted">Item 26</div>
+      </div>
+
+     <div id="example33" class="list-group col">
+        <div class="list-group-item tinted">Item 31</div>
+        <div class="list-group-item tinted">Item 32</div>
+        <div class="list-group-item tinted">Item 33</div>
+        <div class="list-group-item tinted">Item 34</div>
+        <div class="list-group-item tinted">Item 35</div>
+        <div class="list-group-item tinted">Item 36</div>
+      </div>
+    </div>
+
+    <div id="simple-list" class="row" style="display: none;">
+      <h4 class="col-12">Simple list example</h4>
+      <div id="example1" class="list-group col">
+        <div class="list-group-item">Item 1</div>
+      </div>
+    </div>
+</div>
+ -->
+
+
+        <!--Main section  end-->
+        <!--top header end-->
+      </div>
+
+
+
+      <!-- model pop up start -->
+
+      <div class="modal fade" id="facts_colorizer1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel"> Metrics Colorizer </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" style="
+                min-height: 200px;
+                max-height: 400px;
+                overflow: auto;
+            ">
+              <div id="accordion_facts_colorizer1">
+                <!--  <div class="card">
+                      <div class="card-header py-1" id="headingOne" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="cursor: pointer">
+                        <h5 class="mb-0">
+                          <button class="btn">
+                            <span id="iconOne" class="plus-minus">+</span> LKW </button>
+                        </h5>
+                      </div>
+                      <div id="collapseOne" class="collapse show" aria-labelledby="headingOne">
+                        <h6 class="pl-2 mt-2">Value</h6>
+                        <div class="card-body p-2">
+                          <div class="d-flex px-3">
+                            <div class="pl-3 w-50">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck1" />
+                              <label class="form-check-label" for="exampleCheck1">Value CY</label>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                              <input type="number" class="form-control w-25" id="a4" aria-describedby="number" placeholder="min" style="height: 27px" />
+                              <input type="number" class="form-control mx-1 w-25" id="a44" aria-describedby="number" placeholder="max" style="height: 27px" />
+                            </div>
+                          </div>
+                        </div> -->
+                <!--   <div class="card-body p-2">
+                          <div class="d-flex px-3">
+                            <div class="pl-3 w-50">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck2" />
+                              <label class="form-check-label" for="exampleCheck2">Value PV</label>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                              <input type="number" class="form-control w-25" id="a4" aria-describedby="number" placeholder="min" style="height: 27px" />
+                              <input type="number" class="form-control mx-1 w-25" id="a44" aria-describedby="number" placeholder="max" style="height: 27px" />
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body p-2">
+                          <div class="d-flex px-3">
+                            <div class="pl-3 w-50">
+                              <input type="checkbox" class="form-check-input" id="exampleCheck3" />
+                              <label class="form-check-label" for="exampleCheck3">Value</label>
+                            </div>
+                            <div class="d-flex justify-content-end">
+                              <input type="number" class="form-control w-25" id="a4" aria-describedby="number" placeholder="min" style="height: 27px" />
+                              <input type="number" class="form-control mx-1 w-25" id="a44" aria-describedby="number" placeholder="max" style="height: 27px" />
+                            </div>
+                          </div>
+                        </div> -->
+                <!--   </div>
+
+                    </div> //card end  -->
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" id="facts_btn" class="btn btn-primary" onclick="submit_colorizer_data();"
+                style="background-color:#0d6efd">Submit</button>
+              <button type="button" class="btn btn-primary" id="facts_btn_colsed"
+                onclick="submit_colorizer_data_reset();" style="background-color:#0d6efd">Reset</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal -->
+      <div class="modal fade" id="chart_Modal" role="dialog">
+        <div class="modal-dialog modal-lg">
+
+
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+
+              <!-- <h4 class="modal-title">Bar chart </h4> -->
+              <div id="dict_selected_measures_lst" style="display:none;"></div>
+              <div class="form-inline mr-2">
+                <div class="search_hidden_btn">
+                  <label for="example-post" class="float-left mr-2 mb-0">Chart Type</label><br>
+                  <select id="Chart_type" class="form-control-sm">
+                    <option value="bar_chart" selected>Bar Chart</option>
+                    <option value="line_chart">Line Chart</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-inline mr-2">
+                <div class="search_hidden_btn">
+                  <label for="example-post" class="float-left mr-2 mb-0">Timeperiod</label><br>
+                  <select id="Timeperiod_chart" class="form-control-sm">
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-inline mr-2">
+                <div class="search_hidden_btn">
+                  <label for="example-post" class="float-left mr-2 mb-0">Metrics</label><br>
+                  <select id="Facts_chart" class="form-control-sm">
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-inline mr-2">
+                <div class="search_hidden_btn">
+                  <label for="example-post" class="float-left mr-2 mb-0">Other</label><br>
+                  <select id="Other_chart" class="form-control-sm">
+                    <option value="Absolutes" selected>Absolutes</option>
+                    <option value="Share">Share</option>
+                    <option value="Growth">Growth</option>
+                    <option value="bps change">bps Change</option>
+
+                  </select>
+                </div>
+              </div>
+
+
+              <!-- menu bar header start -->
+              <div class="dropdown mr-2" style="margin-left: 3%;">
+                <label for="example-post" class="float-left mr-2 mb-0">Download</label><br>
+                <!-- <button class="btn btn-secondary" id="reset_zoom"> Reset zoom </button>  -->
+                <a class="btn btn-secondary dropdown-toggle form-control-sm pt-2 px-4" href="#" role="button"
+                  data-toggle="dropdown" aria-expanded="false">
+                  Select</a>
+
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" id="download_img" download='Chart Image.png'>Export Image</a>
+                  <!-- <a class="dropdown-item" id="Export_ppt11" >Export ppt</a> -->
+                </div>
+
+                <!-- <div>
+            <p><span>hhhhh</span>&nbsp;&nbsp;<span>hhhhhhhhhh<span></p>
+          </div> -->
+              </div>
+              <!-- menu bar header end -->
+
+
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+
+              <div id="barchartdiv" class="myChartDiv">
+                <canvas id="BarChart"></canvas>
+              </div><br>
+
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- model pop up end -->
+
+</body>
+<!-- Optional JavaScript -->
+
+<script src="{% static 'dist/js/crosstab.js' %}"></script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!-- <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script> -->
+<!--  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>-->
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/all.min.js"
+      integrity="sha512-jAu66pqHWWQ564NS+m2Zxe13Yek98R7JWNjQLzW+PQ4i2jsMxBT1nGrQ0gFUIVJ4kPkEFe5gelBWNEDTBqmn/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+<!-- Multi Select Css & JS Start -->
+<script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.min.js'  %}"></script>
+<link rel="stylesheet" href="{% static 'dist/css/bootstrap-multiselect.css' %}">
+<!-- <script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.js' %}"></script> -->
+
+<script type="text/javascript" src="{% static 'dist/js/barchart.js' %}"></script>
+
+
+<script src="{% static 'dist/js/Sortable.js' %} "></script>
+<script src="{% static 'dist/js/app.js' %} "></script>
+
+<script>
+
+  $(".nav-toggle").click(function (e) {
+    e.preventDefault();
+    $("html").toggleClass("openNav");
+    $(".nav-toggle").toggleClass("active");
+  });
+</script>
+
+
+<script>
+  $(document).ready(function () {
+
+    //  $('#example-xss').multiselect({
+    //     enableClickableOptGroups: true,
+    //     enableCollapsibleOptGroups: true,
+    //     includeSelectAllOption: true,
+
+    // });
+
+    $('#time_range').multiselect({
+      includeSelectAllOption: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#Chart_type').multiselect({
+      includeSelectAllOption: true,
+      // selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#Facts_chart').multiselect({
+      includeSelectAllOption: true,
+      // selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#Timeperiod_chart').multiselect({
+      includeSelectAllOption: true,
+      // selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#Other_chart').multiselect({
+      includeSelectAllOption: true,
+      // selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#time_period').multiselect({
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#comparison_time_period').multiselect({
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#currency_type').multiselect({
+      maxHeight: 100,
+      buttonWidth: '90px',
+      numberDisplayed: 1
+    });
+    $('#measure_time_toggle').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      buttonWidth: '200px',
+      numberDisplayed: 1
+      // buttonContainer: '<div class="btn-group w-100" />'
+    });
+    $('#Weighted').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      buttonWidth: '200px',
+      numberDisplayed: 1
+      // buttonContainer: '<div class="btn-group w-100" />'
+    });
+
+    $('#facts_group_filter').multiselect({
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+
+      // enableClickableOptGroups: true,
+      //   includeSelectAllOption: true,
+      // enableFiltering: false,
+      // maxHeight: 200,
+      buttonWidth: '110px',
+      numberDisplayed: 1
+    });
+    $('#significant_base_col').multiselect({
+      includeSelectAllOption: true,
+      enableFiltering: false,
+      maxHeight: 200,
+      // widthSynchronizationMode: 'ifPopupIsWider',
+      buttonWidth: '200px',
+      numberDisplayed: 1
+      // buttonContainer: '<div class="btn-group w-100" />'
+    });
+    $('#significant').multiselect({
+      includeSelectAllOption: true,
+      enableFiltering: false,
+      maxHeight: 200,
+      // widthSynchronizationMode: 'ifPopupIsWider',
+      buttonWidth: '200px',
+      numberDisplayed: 1
+      // buttonContainer: '<div class="btn-group w-100" />'
+    });
+    
+     $('#filter1_brandindex').multiselect({
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter1').multiselect({
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+
+    $('#filter2').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter3').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      maxHeight: 200,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+
+    $('#filter4').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter5').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter6').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter7').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter8').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter9').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+    $('#filter10').multiselect({
+      enableClickableOptGroups: true,
+      enableCollapsibleOptGroups: true,
+      includeSelectAllOption: true,
+      selectAll: true,
+      search: true,
+      enableCaseInsensitiveFiltering: true,
+      maxHeight: 200,
+      buttonWidth: '110px',
+      height: '24px',
+      numberDisplayed: 1
+    });
+
+    // $('#decimal_filter').multiselect({
+    //     includeSelectAllOption: true,
+    //     enableFiltering: true,
+    //      maxHeight: 200,
+    //       // widthSynchronizationMode: 'ifPopupIsWider',
+    //     buttonWidth: '60px'
+    //     // buttonContainer: '<div class="btn-group w-100" />'
+    // });
+
+    $(function () {
+      // $('[data-toggle="tooltip"]').tooltip()
+      $('[data-toggle="tooltip"]').tooltip({
+        delay: { "show": 500, "hide": 100 },  // Delay for smooth hover
+        animation: true // Enable animation
+    });
+    })
+  });
+  $(function () {
+    $('#toggle-event').change(function () {
+      $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+    })
+  })
+
+  function table_sorting_function(e) {
+    var column_name_sort_table = $(e).data("column1").split(',');
+    var columnid = $(e).attr("id");
+
+    var sort_flag = $(e).data("sortflag");
+    console.log('columnid-->', columnid)
+    console.log('sort_flag-->', sort_flag)
+
+    // var sort_flag='asc_sort';
+    // console.log('column1',column1)
+    // console.log('column1 type',typeof(column1))
+    // console.log('Column_L2',Column_L2)
+    // console.log('Column_L3',Column_L3)
+    // alert('hii')
+    // callback_onchnage('rowfilter_sort','columnfilter_sort','calculation_type_name','weight_type_name','weight_volume_type_name','Total_column_filter','r_text_val','c_text_val','filter_data','flag_button_noreset');
+
+    $.LoadingOverlay("show");
+    setTimeout(function () {
+      filter_data = crosstable_filterdata();
+      var json_stringify = JSON.stringify(filter_data[0]);
+      $("#filter_data_object").html(json_stringify);
+
+      var r_text_val = $('#example2-left').sortableListsToArray()
+      var c_text_val = $('#example2-right').sortableListsToArray()
+      var rowfilter_sort = exract_one_array_object_by_labels(r_text_val);
+      var columnfilter_sort = exract_one_array_object_by_labels(c_text_val);
+
+
+      if (rowfilter_sort.length == 0) {
+        // alert('Please select atleast one variable in row');
+        swal({
+          title: "Opps!",
+          text: "Please select atleast one variable in row!",
+          icon: "warning",
+        });
+        return false;
+      }
+
+      calculation_type_name = $('#calculation_type').val();
+      weight_type_name = $('#weight_type').val();
+      weight_volume_type_name = $('#weight_volume_type').val();
+      Total_column_filter = $('input[name="Total_column"]:checked').val();
+
+
+      callback_onchnage(rowfilter_sort, columnfilter_sort, calculation_type_name, weight_type_name, weight_volume_type_name, Total_column_filter, r_text_val, c_text_val, filter_data, 'flag_button_noreset', column_name_sort_table, sort_flag);
+      var get_json_stringify = $("#filter_data_object").text();
+      var json_obj = JSON.parse(get_json_stringify);
+      filter_length = Object.keys(json_obj).length;
+      filter_keys = Object.keys(json_obj);
+
+      // var q = 1;
+      // for (var i = 0; i <= filter_length; i++) {
+
+      //   $("#filter" + q).val(json_obj[filter_keys[i]]);
+      //   $("#filter" + q).multiselect('rebuild');
+      //   q++;
+      // }
+
+      // Split the class names into an array
+      var classNames = e.className.split(' ');
+      // Get the second class name
+      var secondClassName = classNames[1];
+
+
+
+      if (sort_flag == "desc_sort") {
+        $(e).attr('data-sortflag', 'asc_sort');
+        // $(".column_level_0").attr('data-sortflag', 'desc_sort');
+        $(`.${secondClassName}`).attr('data-sortflag', 'asc_sort');
+        $(`.${secondClassName} i`).removeAttr('class').attr('class', 'fa fa-arrow-down');
+      } if (sort_flag == "asc_sort") {
+        $(e).attr('data-sortflag', 'desc_sort');
+        // $(".column_level_0").attr('data-sortflag', 'asc_sort');
+        $(`.${secondClassName}`).attr('data-sortflag', 'desc_sort');
+        $(`.${secondClassName} i`).removeAttr('class').attr('class', 'fa fa-arrow-up');
+      }
+
+
+      console.log('line 1518-->', e)
+
+      $.LoadingOverlay("hide", true);
+    }, 1500);
+
+
+
+
+
+  }
+
+  document.querySelectorAll('.accordion .card-header button').forEach(function (button) {
+    button.addEventListener('click', function () {
+      document.querySelectorAll('.accordion .card-header').forEach(function (header) {
+        header.classList.remove('active');
+      });
+      this.parentElement.classList.add('active');
+    });
+  });
+</script>
+
+<script>
+  function setDivHeights() {
+    console.log('data working')
+    const availableHeight = window.innerHeight - headerHeight - footerHeight;
+    const divHeight = availableHeight / 3;
+  
+    const div1 = document.getElementsByClassName("div1-height");
+    const div2 = document.getElementsByClassName("div2-height");
+    const div3 = document.getElementsByClassName("div3-height");  
+  
+  
+    div1.style.height = divHeight + "px";
+    div2.style.height = divHeight + "px";
+    div3.style.height = divHeight + "px";
+  }
+  
+  // Call the function on window resize or initial load
+  window.addEventListener("resize", setDivHeights);
+  setDivHeights();
+</script>
+
+
+<!-- <script>
+  $(function() {
+    $('#toggle-two').bootstrapToggle({
+      on: 'Enabled',
+      off: 'Disabled'
+    });
+  })
+</script> -->
+</html>

@@ -1,0 +1,691 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="openNav">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/> -->
+    <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" /> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css"
+      integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"/> -->
+      <link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" />
+      <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+      <!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet.css' %} " media="screen"> -->
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/extrafiles/style.css' %} " media="screen"> -->
+<link rel="stylesheet" href="{% static 'dist/css/custom.css' %}" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet.css' %} " media="screen"> -->
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <!--  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.3/xlsx.full.min.js"></script>-->
+  <script  src="{% static 'dist/js/common.js' %}"></script>
+  <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
+  <!-- <script  src="{% static 'dist/js/xlsx.js' %}"></script> -->
+  <!--  <script  src="{% static 'dist/js/jszip.js' %}"></script>-->
+  <!-- <script  src="{% static 'dist/js/jquery.min.js' %}"></script> -->
+
+<!-- <script src="https://code.jquery.com/jquery-git1.min.js"></script> -->
+
+
+  <script>var csrftoken = '{{csrf_token}}';</script>
+  <!-- latest version -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> --> 
+  <!-- old version chart js -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.js"></script> -->
+
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@0.7.5/dist/chartjs-plugin-zoom.min.js'></script>
+
+<script src="{% static 'dist/js/jquery-sortable-lists.js' %} "></script>
+
+    <title>Crosstab</title>
+<style>
+    /*.myChartDiv {
+      max-width: 600px;
+      max-height: 400px;
+    }*/
+    body {
+    font-family: "Work Sans", sans-serif;
+    margin: 0;
+    background-color: #eee;
+    font-size: 12px;
+    }
+    /* Layout */
+
+    #container {
+    padding: 0;
+    margin: 0;
+    background-color: #fff;
+    }
+
+    #main {
+    padding: 4% 0.5em;
+    max-width: 90%;
+    margin: 0 auto;
+    }
+    .btn-default {
+    border: solid 1px #ccc;
+    }
+    .wid .multiselect-container.dropdown-menu.show {
+    display: block;
+    width: 460px !important;
+    }
+    /*multisected css*/
+    /*      .btn-default {
+    border: solid 1px #ccc;
+    }
+    .new-wrapper {
+    position: absolute;
+    left: 50px;
+    width: calc(100% - 50px);
+    transition: transform .45s cubic-bezier(0.77, 0, 0.175, 1);
+    background-color: #ededed;
+    min-height: 100vh;
+    height: auto;
+    }*/
+
+    /*testing css*/
+    .dropdown-toggle {
+    position: relative;
+    }
+
+    .dropdown-toggle::after {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    }
+
+    .multiselect-container  > li {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    padding-left: 5px !important;
+    }
+
+    .multiselect-container  > li > a > label {
+    padding: 0px !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    }
+
+    .multiselect-container  > li > a > label > input {
+    margin: 0px !important;
+    }
+    .blue-theme .bg-info {
+    background-color: #71aae6!important;
+    }
+    .red-theme .bg-info {
+    background-color: #f04a46!important;
+    }
+    .bcst-theme .bg-info {
+    background-color: #002366 !important;
+    color:#fff !important;
+    }
+    .bcst-theme .table .thead-dark th {
+    color: #fff;
+    background-color: #c62d1f !important;
+    border-color: #caced2 !important;
+    padding:1px;
+    }
+    #weight_volume_type_div button {
+    padding: 0.1rem 0.5rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+    font-size:12px;
+    }
+    .total_colum .multiselect-native-select .btn-group {
+    width: 100px !important;
+    }
+    .table {
+    width: auto !important;
+    margin-bottom: 1rem;
+    color: #212529;
+    }
+    .btn {
+    display: inline-block;
+    font-weight: 300;
+    color: #212529;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 1px solid #002366;
+    padding: 0.275rem 0.375rem;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 0.25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+    .btn-group button {
+    <!--    min-width: 120px !important;-->
+    <!--    maz-width: 200px !important;-->
+    }
+    .form-group {
+    margin-bottom: 0.2rem !important;
+    }
+    table td, .table th {
+    padding: .2rem !important;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+    }
+</style>
+  </head>
+  <body class="bg-light bcst-theme">
+    <div class="primary-nav">
+<!-- open close button -->
+        <button href="#" class="hamburger open-panel nav-toggle active">
+      <span class="screen-reader-text">Menu</span>
+    </button>
+     <nav role="navigation" class="menu">
+
+            <a href="#" class="logotype">
+<!--                BSW <span>CrossDash</span>-->
+                <img src="{% static 'dist/img/bcst-logo1.png' %}" class="img-fluid mt-3">
+<!--                <img src="static/dist/">-->
+            </a>
+
+            <div class="overflow-container">
+
+                <div class="row mt-2">
+                    <div class="col-12 mb-3">
+                        <p class="text-white">Row Variable</p>
+                        <div class="bg-white p-2" id="row_section">
+                            <!-- <P>add here</P> -->
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <p class="text-white">Column Variable</p>
+                        <div class="bg-white p-2" id="column_section">
+                            <!-- <P>add here</P> -->
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <p class="text-white">Other Variable</p>
+                        <div class="bg-white p-2" id="other_variable">
+                            <!-- <P>add here</P> -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+
+
+
+    </div>
+
+
+
+
+    <div class="new-wrapper">
+        <!--top header start-->
+        <div class="bg-white sticky-top">
+            <h4 class="border-left p-3 text-primary">BrandScapes Consumer & Sales Tracker</h4>
+        </div>
+
+
+         <!-- Main section start -->
+      <div id="main" class="pt-3 pb-1">
+        <div id="main-contents" class="container px-1">
+          <div class="">
+            <div class="bg-white col row my-2 p-1 rounded d-flex">
+              <div class="pl-3">
+                <a class="nav-link fa-1x py-0 px-0 text-black" href="{% static 'download_cross_table_excel/cross_df.xlsx'%}" tabindex="-1" aria-disabled="true"
+                download="abc.xls" title="Download">
+                <i class="fa fa-address-book mt-1 pt-3 text-body"></i>
+                </a>
+              </div>
+              <div class="pl-3" id="chart_div">
+                <i class="fa fa-line-chart mt-1 pt-3 text-body"></i>
+              </div>
+              <div class="pl-3">
+                <div class="custom-control custom-switch pt-3 text-body">
+                  <input type="checkbox" class="custom-control-input" id="toggle-event" >
+                  <label class="custom-control-label" for="toggle-event" title="Transpose"></label>
+                  <!-- <div id="console-event"></div> -->
+                </div>
+              </div>
+
+                  <div class="pl-3">
+                    <div class="form-group">
+                      <label for="example-post" class="mr-2 mb-0">Decimal</label><br>
+                      <select id="decimal_filter">
+                          <option value="0" selected>0</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="pl-3">
+                      <div class="form-group">
+                        <label for="example-post" class="mr-2 mb-0">Total column</label><br>
+                        <select id="Total_column_filter">
+                            <option value="0" selected>Disable</option>
+                            <option value="1">Enable</option>
+                        </select>
+                      </div>
+                  </div>
+                  <div class="pl-3">
+                    <div id="table_name" style="display:none"></div>
+                      <div class="form-group">
+                          <label for="example-post" class="mr-2 mb-0">Row</label><br>
+                          <select id="rowfilter" class="w-75" name="multiselect[]" multiple="multiple">
+                             <!--  <option value="Gender" selected>Gender</option>
+                              <option value="Region">Region</option>
+                              <option value="Age_Group">Age_Group</option>
+-->
+                          </select>
+                      </div>
+                  </div>
+                  <div class="pl-3">
+                      <div class="form-group">
+                          <label for="example-post" class="mr-2 mb-0">Column</label><br>
+                          <select id="columnfilter" name="multiselect[]" multiple="multiple">
+                               <!-- <option value="Gender" selected>Gender</option>
+                              <option value="Region" selected>Region</option>
+                              <option value="Age_Group">Age_Group</option> -->
+                          </select>
+                      </div>
+                  </div>
+                    <div class="pl-3">
+                        <div class="form-group">
+                            <label for="example-post" class="mr-2 mb-0">Calculation Type</label><br>
+                            <select id="calculation_type" >
+                                 <option value="column_percent" selected>Column Percent</option>
+                                <option value="row_percent" >Row Percent</option>
+                                <option value="actual_count">Actual Count</option>
+                                <!-- <option value="grand_total_count">Grand Total Percent</option> -->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pl-3">
+                        <div class="form-group">
+                            <label for="example-post" class="mr-2 mb-0">Weight Type</label><br>
+                            <select id="weight_type">
+                                 <option value="weighted" selected>Weighted</option>
+                                <option value="unweighted" >Unweighted</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="pl-3"  id="weight_volume_type_div">
+                        <div class="form-group">
+                            <label for="example-post" class="mr-2 mb-0">Measure </label><br>
+                            <select id="weight_volume_type">
+                                <!-- <option value="weighting" selected>Weighted</option>
+                                <option value="Volume" >Volume</option> -->
+                            </select>
+                        </div>
+                    </div>
+               </div>
+          </div>
+          <div class="bg-white col p-3 rounded row">
+            <div class="col-12 table-responsive" style="min-height:200px; max-height: 68vh;width: 99%;overflow-x: scroll;">
+              <section id="cross_tab_data_table">
+                <table class="table table-striped border">
+
+                  <!-- <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Larry</td>
+                      <td>the Bird</td>
+                      <td>@twitter</td>
+                    </tr>
+                  </tbody> -->
+                </table> 
+              </section>
+            </div>
+          </div>
+          <section>
+        <p><strong>JQuery sortable lists</strong></p>
+        <span id="toArrBtn" class="btn">To array</span>
+        <span id="toHierBtn" class="btn">To hierarchy</span>
+        <span id="toStrBtn" class="btn">To string</span>
+      </section>
+
+        </div>
+
+      
+
+      </div> <!--Main section  end-->
+        <!--top header end-->
+    </div>
+
+
+
+<!-- model pop up start -->
+ <!-- Modal -->
+  <div class="modal fade" id="chart_Modal" role="dialog">
+    <div class="modal-dialog modal-lg">
+      
+
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          
+          <!-- <h4 class="modal-title">Bar chart </h4> -->
+
+          <div class="form-inline">
+            <div class="form-group">
+                <label for="example-post" class="mr-2 mb-0">Chart Type</label><br>
+                <select id="Chart_type" >
+                     <option value="bar_chart" selected>Bar Chart</option>
+                    <option value="line_chart">Line Chart</option>
+                </select>
+            </div>
+          </div>
+          
+          <!-- menu bar header start -->
+          <div class="dropdown" style="margin-left: 44%;padding-top: 1%;">
+            <button class="btn btn-secondary" id="reset_zoom"> Reset zoom </button> 
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+          Download 
+
+          </a>
+
+          <div class="dropdown-menu">
+          <a class="dropdown-item" id="download_img" download = 'Chart Image.png'>Export Image</a>
+          <a class="dropdown-item" id="Export_ppt" href="#">Export ppt</a>
+          </div>
+
+          <div>
+            <p><span>hhhhhhhhhhhhhhhhhhhh</span>&nbsp;&nbsp;<span>hhhhhhhhhhhhhhhhhhhh<span></p>
+          </div>
+          </div>
+          <!-- menu bar header end -->
+
+
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+         
+            <div id="barchartdiv" class="myChartDiv">
+          <canvas id="BarChart"></canvas>
+        </div><br>
+         
+        
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+<!-- model pop up end -->
+  </body>
+    <!-- Optional JavaScript -->
+    
+    <script  src="{% static 'dist/js/crosstab.js' %}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <!--  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/all.min.js"
+      integrity="sha512-jAu66pqHWWQ564NS+m2Zxe13Yek98R7JWNjQLzW+PQ4i2jsMxBT1nGrQ0gFUIVJ4kPkEFe5gelBWNEDTBqmn/w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <!-- Multi Select Css & JS Start -->
+  <script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.min.js'  %}"></script>
+  <link rel="stylesheet" href="{% static 'dist/css/bootstrap-multiselect.css' %}">
+  <script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.js' %}"></script>
+  
+  <script type="text/javascript" src="{% static 'dist/js/barchart.js' %}"></script>
+
+
+  <script>
+    $(".nav-toggle").click(function (e) {
+      e.preventDefault();
+      $("html").toggleClass("openNav");
+      $(".nav-toggle").toggleClass("active");
+    });
+  </script>
+
+
+<script type="text/javascript">
+var html='';
+html+='<ul class="sTree2 listsClass" id="sTree2">'; 
+html+='<li id="item_a" data-module="a"><div>Item a</div></li>'; 
+html+='<li id="item_a" data-module="a"><div>Item b</div></li>'; 
+html+='<li id="item_a" data-module="a"><div>Item c</div></li>'; 
+html+='<li id="item_a" data-module="a"><div>Item d</div></li>'; 
+html+='</ul>';
+$('#row_section').append(html);  
+  
+$(function()
+{
+  var options = {
+    placeholderCss: {'background-color': '#ff8'},
+    hintCss: {'background-color':'#bbf'},
+    onChange: function( cEl )
+    {
+      console.log( 'onChange' );
+    },
+    complete: function( cEl )
+    {
+      console.log( 'complete' );
+    },
+    isAllowed: function( cEl, hint, target )
+    {
+      // Be carefull if you test some ul/ol elements here.
+      // Sometimes ul/ols are dynamically generated and so they have not some attributes as natural ul/ols.
+      // Be careful also if the hint is not visible. It has only display none so it is at the previous place where it was before(excluding first moves before showing).
+      if( target.data('module') === 'c' && cEl.data('module') !== 'c' )
+      {
+        hint.css('background-color', '#ff9999');
+        return false;
+      }
+      else
+      {
+        hint.css('background-color', '#99ff99');
+        return true;
+      }
+    },
+    opener: {
+      active: true,
+      as: 'html',  // if as is not set plugin uses background image
+      close: '<i class="fa fa-minus c3"></i>',  // or 'fa-minus c3'
+      open: '<i class="fa fa-plus"></i>',  // or 'fa-plus'
+      openerCss: {
+        'display': 'inline-block',
+        //'width': '18px', 'height': '18px',
+        'float': 'left',
+        'margin-left': '-35px',
+        'margin-right': '5px',
+        //'background-position': 'center center', 'background-repeat': 'no-repeat',
+        'font-size': '1.1em'
+      }
+    },
+    ignoreClass: 'clickable'
+  };
+
+  var optionsPlus = {
+    insertZonePlus: true,
+    placeholderCss: {'background-color': '#ff8'},
+    hintCss: {'background-color':'#bbf'},
+    opener: {
+      active: true,
+      as: 'html',  // if as is not set plugin uses background image
+      close: '<i class="fa fa-minus c3"></i>',
+      open: '<i class="fa fa-plus"></i>',
+      openerCss: {
+        'display': 'inline-block',
+        'float': 'left',
+        'margin-left': '-35px',
+        'margin-right': '5px',
+        'font-size': '1.1em'
+      }
+    }
+  };
+
+  $('#sTree2').sortableLists( options );
+  $('#sTreePlus').sortableLists( optionsPlus );
+
+  $('#toArrBtn').on( 'click', function(){ console.log( $('#sTree2').sortableListsToArray() ); } );
+  $('#toHierBtn').on( 'click', function() { console.log( $('#sTree2').sortableListsToHierarchy() ); } );
+  $('#toStrBtn').on( 'click', function() { console.log( $('#sTree2').sortableListsToString() ); } );
+  $('.descPicture').on( 'click', function(e) { $(this).toggleClass('descPictureClose'); } );
+
+  $('.clickable').on('click', function(e) { alert('Click works fine! IgnoreClass stopped onDragStart event.'); });
+
+  /* Scrolling anchors */
+  $('#toPictureAnch').on( 'mousedown', function( e ) { scrollToAnch( 'pictureAnch' ); return false; } );
+  $('#toBaseElementAnch').on( 'mousedown', function( e ) { scrollToAnch( 'baseElementAnch' ); return false; } );
+  $('#toBaseElementAnch2').on( 'mousedown', function( e ) { scrollToAnch( 'baseElementAnch' ); return false; } );
+  $('#toCssPatternAnch').on( 'mousedown', function( e ) { scrollToAnch( 'cssPatternAnch' ); return false; } );
+
+  function scrollToAnch( id )
+  {
+    return true;
+    $('html, body').animate({
+      scrollTop: '-=-' + $("#" + id).offset().top + 'px'
+    }, 750);
+    return false;
+  }
+
+});
+
+</script>
+
+   
+    <script>
+    $(document).ready(function() {
+        $('#rowfilter').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+             maxHeight: 200,
+              // widthSynchronizationMode: 'ifPopupIsWider',
+            buttonWidth: '200px'
+            // buttonContainer: '<div class="btn-group w-100" />'
+        });
+        $('#decimal_filter').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+             maxHeight: 200,
+              // widthSynchronizationMode: 'ifPopupIsWider',
+            buttonWidth: '60px'
+            // buttonContainer: '<div class="btn-group w-100" />'
+        });
+         
+        $('#columnfilter').multiselect({
+            includeSelectAllOption: true,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+        $('#calculation_type').multiselect({
+            includeSelectAllOption: false,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+        
+         $('#weight_type').multiselect({
+            includeSelectAllOption: false,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+          $('#weight_volume_type').multiselect({
+            includeSelectAllOption: false,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+          $('#Total_column_filter').multiselect({
+            includeSelectAllOption: false,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+
+    });
+    $(function() {
+    $('#toggle-event').change(function() {
+      $('#console-event').html('Toggle: ' + $(this).prop('checked'))
+    })
+  })
+</script>
+
+</html>

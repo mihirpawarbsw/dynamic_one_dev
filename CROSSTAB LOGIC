@@ -1,0 +1,10 @@
+
+A)weighted- (By default when page loads)
+1)People - distinct the crosstab (groupby) and multiply with weighting
+2)Occassion - Keep crosstab as it is, and multiply with weighting
+3)Volume - Multiply crosstab with Volume and weighting
+
+B)unweighted- 
+1)People - distinct the crosstab (groupby)
+2)Occassion - Keep crosstab as it is
+3)Volume - Multiply crosstab with Volume

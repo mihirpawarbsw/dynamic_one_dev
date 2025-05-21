@@ -1,0 +1,47 @@
+1)FIRST API CALL
+url : http://127.0.0.1:8000/api/authenticate/
+url : https://dynamicviewtest.brand-scapes.com/api/authenticate/
+API Request
+{"email":"pranit.dudhane@brand-scapes.com"}
+
+RESPONSES
+A)user not exit 
+{"error":"User not found","code":404}
+note: create log file to check error
+
+B)user exit response receive
+{
+    "user_id": 9,
+    "email": "mihir.pawar@brand-scapes.com",
+    "token": "436a3632-cfd5-4a72-9cba-b5deb547ba3c"
+}
+Note : data store in my database user_authentication table
+
+
+2)SECOND API CALL
+URL : http://127.0.0.1:8000/api/verify-token-and-login/
+URL : https://dynamicviewtest.brand-scapes.com/api/verify-token-and-login/
+
+API Request for token
+{
+    "user_id": 1,
+    "token": "token"
+}
+Note: match requested id and token from user_authentication table if record exit or not
+
+RESPONSES
+
+1)token if not match response
+redirect to 404 page
+{"detail":"No UserAuthentication matches the given query."}
+
+django login function call 
+2)success response
+{
+    "code": 200,
+    "status": "successfully",
+    "Message": "login successfully"
+}
+
+#####################################################################
+###################################################################

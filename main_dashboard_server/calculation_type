@@ -1,0 +1,111 @@
+calculation_type
+1.column_percentage(bydefault)
+2.row_percentage
+3.grand_total
+4.actual_total
+
+weight_type
+1.weighted(default)
+2.unweighted
+
+
+
+
+
+function row_column_nested(){
+	
+	row=''
+	col=''
+	file_name=''
+	weight_type='weighted'
+
+	if(weight_type){
+		cross_data=weighted(data)
+	}
+	else{
+		cross_data=unweighted(data)
+	}
+
+	cross_data
+
+	calculation_type='column_percentage'
+	if(calculation_type='column_percentage'){
+		cross_data=column_percentage(data)
+	}
+	elseif(calculation_type='row_percentage'){
+		cross_data=row_percentage(data)
+	}
+	elseif(calculation_type='grand_total'){
+		cross_data=grand_total(data)
+	}
+	elseif(calculation_type='actual_total'){
+		cross_data=actual_total(data)
+	}
+
+
+	final_cross_data
+
+
+	reps={
+
+	}
+
+	return=reps
+	
+
+}
+
+
+
+
+function row_seperated_column_nested(){
+
+	row=['gender','zone','age']
+	col=['gender','zone']
+	file_name='abc.xls'
+	weight_type='weighted'
+
+	
+
+	if(weight_type){
+		cross_data=weighted(data)
+	}
+	else{
+		cross_data=unweighted(data)
+	}
+
+	cross_data
+
+
+
+	
+
+}
+==================================common function start====================================================================
+function column_percentage(data){
+	retrun data
+}
+
+function row_percentage(data){
+	retrun data
+}
+
+function grand_total(data){
+	retrun data
+}
+
+function actual_total(data){
+	retrun data
+}
+
+
+function weighted(data){
+	retrun data
+}
+
+function unweighted(data){
+	retrun data
+}
+
+
+=====================================common function end=================================================================

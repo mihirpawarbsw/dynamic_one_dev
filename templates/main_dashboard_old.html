@@ -1,0 +1,163 @@
+ {% load static %}
+<!DOCTYPE html>
+<html>
+<title>CCV Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/jszip.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script> -->
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.2/xlsx.full.min.js"></script> -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.3/xlsx.full.min.js"></script>
+              <script  src="{% static 'dist/js/main_dashboard.js' %}"></script>
+              <script  src="{% static 'dist/js/common.js' %}"></script>
+              <!-- <script  src="{% static 'dist/js/xlsx.js' %}"></script> -->
+              <script  src="{% static 'dist/js/jszip.js' %}"></script>
+              <!-- <script  src="{% static 'dist/js/jquery.min.js' %}"></script> -->
+              <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+              <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+     <script>var csrftoken = '{{csrf_token}}';</script>
+<body>
+
+<div class="w3-container w3-teal">
+  <h1>CCV Tool</h1>
+</div>
+
+  <!-- Trigger the modal with a button -->
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal_upload">Upload Data</button>
+
+  <!-- Modal -->
+  <div class="modal fade" id="myModal_upload" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Upload Data</h4>
+        </div>
+        <div class="modal-body">
+            <div>
+
+  <input type="file" class="custom-file-input"  id="docfile1">
+  <span  id="country_upload_file1"></span>
+ 
+ <button type="submit" id="Upload_data_btn" class="btn btn-light mt-2 mb-4">
+  <i class="fas fa-database"></i> Upload Data
+</button>
+
+</div>
+  </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+
+
+
+
+
+
+<!-- Sidebar -->
+<div class="w3-sidebar w3-light-grey w3-bar-block" style="width:25%">
+
+
+
+      
+
+
+  <script>
+    var ExcelToJSON = function() {
+
+      this.parseExcel = function(file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var data = e.target.result;
+          var workbook = XLSX.read(data, {
+            type: 'binary'
+          });
+          workbook.SheetNames.forEach(function(sheetName) {
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            var json_object = JSON.stringify(XL_row_object);
+            console.log(JSON.parse(json_object));
+            localStorage.removeItem("upload-items");
+            localStorage.setItem('upload-items', json_object);
+            // jQuery( '#xlx_json' ).val( json_object );
+          })
+        };
+
+        reader.onerror = function(ex) {
+          console.log(ex);
+        };
+
+        reader.readAsBinaryString(file);
+      };
+  };
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+    var xl2json = new ExcelToJSON();
+    xl2json.parseExcel(files[0]);
+  }
+
+// console.log('get url',window.location.href);
+document.getElementById('docfile1').addEventListener('change', handleFileSelect, false);
+// if (window.location.href=='https://127.0.0.1:8000/user') {
+//     document.getElementById('docfile1').addEventListener('change', handleFileSelect, false);
+
+// }
+
+
+
+
+
+
+
+
+//   let selectedFile;
+// // console.log(window.XLSX);
+// // data upload for all category start here
+// document.getElementById('docfile1').addEventListener("change", (event) => {
+//     selectedFile = event.target.files[0];
+//     let data=[{
+//         "name":"jayanth",
+//         "data":"scd",
+//         "abc":"sdef"
+//     }]
+//     // alert('dddddddddddddd');
+//     XLSX.utils.json_to_sheet(data, 'out.xlsx');
+//     if(selectedFile){
+//         let fileReader = new FileReader();
+//         fileReader.readAsBinaryString(selectedFile);
+//         fileReader.onload = (event)=>{
+//          let data = event.target.result;
+//          let workbook = XLSX.read(data,{type:"binary"});
+//          // console.log('workbook',workbook);
+//          workbook.SheetNames.forEach(sheet => {
+//                 let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets['Upload_backend']);
+//                 // let rowObject = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheet]);
+//                 // console.log('rowObject',rowObject);
+//                 var json_object = JSON.stringify(rowObject);
+//                 localStorage.removeItem("upload-items");
+//                 localStorage.setItem('upload-items', json_object);
+//                 // document.getElementById("jsondata").innerHTML = JSON.stringify(rowObject,undefined,4)
+//          });
+//         }
+//     }
+// })
+// // data upload for all category end here
+
+    </script>
+
+</body>
+</html>

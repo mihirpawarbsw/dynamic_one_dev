@@ -1,0 +1,294 @@
+ {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<title>jQquery sortable lists</title>
+
+<!-- new css -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.3/xlsx.full.min.js"></script>
+<script  src="{% static 'dist/js/common.js' %}"></script>
+<!-- <script  src="{% static 'dist/js/xlsx.js' %}"></script> -->
+<!-- <script  src="{% static 'dist/js/jszip.js' %}"></script> -->
+<!-- <script  src="{% static 'dist/js/jquery.min.js' %}"></script> -->
+<script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+
+<script>var csrftoken = '{{csrf_token}}';</script>
+
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet.css' %} " media="screen">
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/github-dark.css' %} " media="screen"> -->
+<script src="https://code.jquery.com/jquery-git1.min.js"></script>
+<script src="{% static 'dist/js/jquery-sortable-lists.js' %} "></script>
+<script type="text/javascript">
+    $(function()
+    {
+        var options = {
+            placeholderCss: {'background-color': '#ff8'},
+            hintCss: {'background-color':'#bbf'},
+            onChange: function( cEl )
+            {
+                console.log( 'onChange' );
+            },
+            complete: function( cEl )
+            {
+                console.log( 'complete' );
+            },
+            isAllowed: function( cEl, hint, target )
+            {
+                // Be carefull if you test some ul/ol elements here.
+                // Sometimes ul/ols are dynamically generated and so they have not some attributes as natural ul/ols.
+                // Be careful also if the hint is not visible. It has only display none so it is at the previous place where it was before(excluding first moves before showing).
+                if( target.data('module') === 'c' && cEl.data('module') !== 'c' )
+                {
+                    hint.css('background-color', '#ff9999');
+                    return false;
+                }
+                else
+                {
+                    hint.css('background-color', '#99ff99');
+                    return true;
+                }
+            },
+            opener: {
+                active: true,
+                as: 'html',  // if as is not set plugin uses background image
+                close: '<i class="fa fa-minus c3"></i>',  // or 'fa-minus c3'
+                open: '<i class="fa fa-plus"></i>',  // or 'fa-plus'
+                openerCss: {
+                    'display': 'inline-block',
+                    //'width': '18px', 'height': '18px',
+                    'float': 'left',
+                    'margin-left': '-35px',
+                    'margin-right': '5px',
+                    //'background-position': 'center center', 'background-repeat': 'no-repeat',
+                    'font-size': '1.1em'
+                }
+            },
+            ignoreClass: 'clickable'
+        };
+
+        var optionsPlus = {
+            insertZonePlus: true,
+            placeholderCss: {'background-color': '#ff8'},
+            hintCss: {'background-color':'#bbf'},
+            opener: {
+                active: true,
+                as: 'html',  // if as is not set plugin uses background image
+                close: '<i class="fa fa-minus c3"></i>',
+                open: '<i class="fa fa-plus"></i>',
+                openerCss: {
+                    'display': 'inline-block',
+                    'float': 'left',
+                    'margin-left': '-35px',
+                    'margin-right': '5px',
+                    'font-size': '1.1em'
+                }
+            }
+        };
+
+        $('#sTree2').sortableLists( options );
+        $('#sTreePlus').sortableLists( optionsPlus );
+        $('#sTreePlus1').sortableLists( optionsPlus );
+
+        $('#toArrBtn').on( 'click', function(){ console.log( $('#sTree2').sortableListsToArray() ); } );
+        $('#toHierBtn').on( 'click', function() { console.log( $('#sTree2').sortableListsToHierarchy() ); } );
+        $('#toStrBtn').on( 'click', function() { console.log( $('#sTree2').sortableListsToString() ); } );
+        $('.descPicture').on( 'click', function(e) { $(this).toggleClass('descPictureClose'); } );
+
+        $('.clickable').on('click', function(e) { alert('Click works fine! IgnoreClass stopped onDragStart event.'); });
+
+        /* Scrolling anchors */
+        // $('#toPictureAnch').on( 'mousedown', function( e ) { scrollToAnch( 'pictureAnch' ); return false; } );
+        // $('#toBaseElementAnch').on( 'mousedown', function( e ) { scrollToAnch( 'baseElementAnch' ); return false; } );
+        // $('#toBaseElementAnch2').on( 'mousedown', function( e ) { scrollToAnch( 'baseElementAnch' ); return false; } );
+        // $('#toCssPatternAnch').on( 'mousedown', function( e ) { scrollToAnch( 'cssPatternAnch' ); return false; } );
+
+        // function scrollToAnch( id )
+        // {
+        //  return true;
+        //  $('html, body').animate({
+        //      scrollTop: '-=-' + $("#" + id).offset().top + 'px'
+        //  }, 750);
+        //  return false;
+        // }
+
+    });
+
+</script>
+
+
+
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="{% static 'dist/css/custom.css' %}" />
+<link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" />
+<style>
+.btn-default {
+    border: solid 1px #ccc;
+}
+.new-wrapper {
+    position: absolute;
+    left: 50px;
+    width: calc(100% - 50px);
+    transition: transform .45s cubic-bezier(0.77, 0, 0.175, 1);
+    background-color: #ededed;
+    min-height: 100vh;
+    height: auto;
+}
+</style>
+</head>
+<body>
+<div class="container">
+    <section id="main_content">
+            <ul id="sTree2" class="sTree2 mV10">
+                <li><div>Item 1</div></li>
+                <li><div>Item 2</div></li>
+                <li><div>Item 3</div></li>
+                <li><div>Item 4</div></li>
+                <li><div>Item 5</div></li>
+            </ul>
+    </section>
+
+    
+</div>
+
+<div class="container">
+	<section id="main_content">
+            <ul id="sTreePlus" class="sTreePlus mV10">
+                <li><div>Item 1</div></li>
+                <li><div>Item 2</div></li>
+                <li><div>Item 3</div></li>
+                <li><div>Item 4</div></li>
+                <li><div>Item 5</div></li>
+            </ul>
+	</section>
+</div>
+
+
+<div class="container">
+    <section id="main_content">
+            <ul id="sTreePlus1" class="sTreePlus1 mV10">
+                <li><div>Item 1</div></li>
+                <li><div>Item 2</div></li>
+                <li><div>Item 3</div></li>
+                <li><div>Item 4</div></li>
+                <li><div>Item 5</div></li>
+            </ul>
+    </section>
+
+    
+</div>
+</body>
+
+ <!-- Optional JavaScript -->
+     <script  src="{% static 'dist/js/main_dashboard.js' %}"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+     <!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+
+
+     <!-- Multi Select Css & JS Start -->
+<script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.min.js'  %}"></script>
+<link rel="stylesheet" href="{% static 'dist/css/bootstrap-multiselect.css' %}">
+<script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.js' %}"></script>
+<!-- 
+    <script>
+        $('.nav-toggle').click(function(e) {
+            e.preventDefault();
+            $("html").toggleClass("openNav");
+            $(".nav-toggle").toggleClass("active");
+
+        });
+
+    var ExcelToJSON = function() {
+
+      this.parseExcel = function(file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var data = e.target.result;
+          var workbook = XLSX.read(data, {
+            type: 'binary'
+          });
+          workbook.SheetNames.forEach(function(sheetName) {
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            var json_object = JSON.stringify(XL_row_object);
+            console.log('data resp',JSON.parse(json_object));
+            localStorage.removeItem("upload-items");
+            localStorage.setItem('upload-items', json_object);
+            // // jQuery( '#xlx_json' ).val( json_object );
+          })
+        };
+
+        reader.onerror = function(ex) {
+          console.log(ex);
+        };
+
+        reader.readAsBinaryString(file);
+      };
+  };
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+    var xl2json = new ExcelToJSON();
+    xl2json.parseExcel(files[0]);
+  }
+document.getElementById('docfile1').addEventListener('change', handleFileSelect, true);
+
+document.getElementById('Upload_data_btn').addEventListener('click', openDialog);
+function openDialog() {
+  document.getElementById('docfile1').click();
+}
+// console.log('get url',window.location.href);
+    </script> -->
+
+    <script>
+        $('#popup1').appendTo("body") 
+        $('#popup2').appendTo("body") 
+
+    </script>
+
+<script>
+    $(document).ready(function() {
+         $('#rowfilter').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+             maxHeight: 200,
+              // widthSynchronizationMode: 'ifPopupIsWider',
+            buttonWidth: '200px'
+            // buttonContainer: '<div class="btn-group w-100" />'
+        });
+         
+        $('#columnfilter').multiselect({
+            includeSelectAllOption: true,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+    });
+</script>
+</html>
+

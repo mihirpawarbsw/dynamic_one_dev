@@ -1,0 +1,161 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+      integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      /* login css */
+      .wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        min-height: 100%;
+        padding: 20px;
+        height: 100vh;
+        background-color: #787171;
+      }
+
+      #formContent {
+        -webkit-border-radius: 10px 10px 10px 10px;
+        border-radius: 10px 10px 10px 10px;
+        background: #fff;
+        padding: 30px;
+        width: 90%;
+        max-width: 400px;
+        position: relative;
+        padding: 0px;
+        -webkit-box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+        box-shadow: 0 30px 60px 0 rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+
+      #formFooter {
+        background-color: #f6f6f6;
+        border-top: 1px solid #dce8f1;
+        padding: 10px;
+        text-align: center;
+        -webkit-border-radius: 0 0 10px 10px;
+        border-radius: 0 0 10px 10px;
+        margin-top: 20px;
+      }
+      #formFooter #icon {
+        width: 70%;
+      }
+      .form-check-input {
+        /* border: var(--bs-border-width) solid #706e6e !important; */
+      }
+      .form-control {
+        /* border: var(--bs-border-width) solid #707273 !important; */
+      }
+     .btn-primary {
+        color: #fff;
+        background-color: #d0312d;
+        border-color: #d0312d;
+      }
+      .btn-primary:hover {
+        color: #fff;
+        background-color: #c62d1f;
+        border-color: #c62d1f;
+      }
+    </style>
+
+    <title>login Page</title>
+  </head>
+  <body>
+    <div class="container-fluid p-0">
+      <div class="wrapper">
+        <div id="formContent" class="align-content-center">
+          <!-- Tabs Titles -->
+
+          <!-- Icon -->
+          <div class="fadeIn first p-3">
+            <img src="{% static 'dist/img/bcst-logo1.png' %}" id="icon" alt="User Icon" style="height:35px;" />
+            <!-- <h4 class="mb-0 mt-3 text-danger text-uppercase fw-bold pt-3">
+              WordCloud Generator
+            </h4> -->
+          </div>
+
+          <!-- Login Form -->
+          <div class="p-4">
+            <form action="login" method="post">
+                {% csrf_token %}
+                <center><p>
+                {% if messages %}
+                   {% for msg in messages %}
+                       {{ msg }}
+                   {% endfor %}
+                {% endif %}
+                </p></center>
+              <div class="mb-3 text-left">
+                <label for="exampleInputEmail1" class="form-label float-start"
+                  >Username</label
+                >
+                <input type="text" class="form-control" placeholder="" id="email" name="email">
+              </div>
+              <div class="mb-3 text-left">
+                <label
+                  for="exampleInputPassword1"
+                  class="form-label float-start"
+                  >Password</label
+                >
+                 <input type="password" class="form-control" placeholder="" id="password" name="password">
+              </div>
+              <div
+                class="mb-3 form-check d-flex form-check justify-content-lg-between mb-3"
+              >
+                <input
+                  type="checkbox"
+                  class="form-check-input mt-2"
+                  id="exampleCheck1"
+                />
+                <label class="form-check-label float-start" for="exampleCheck1"
+                  >Remember Me</label
+                >
+                <!-- <p><a href="#" class="text-dark">Forget Passowrd</a></p> -->
+              </div>
+              <a href="landing-page.html" class="w-100">
+                <!-- <button type="button" class="btn btn-primary w-50 mt-2">
+                  SUBMIT
+                </button> -->
+                <input type="submit" class="btn btn-block btn-danger login-button shadow" value="Login" id="Login_btn" >
+              </a>
+            </form>
+          </div>
+
+          <!-- Remind Passowrd -->
+          <div id="formFooter">
+            <img src="{% static 'dist/img/BSW_Logo.png' %}" id="icon" />
+          </div> 
+        </div>
+      </div>
+    </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

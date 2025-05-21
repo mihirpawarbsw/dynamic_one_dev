@@ -1,0 +1,619 @@
+ {% load static %}
+<!DOCTYPE html>
+<html lang="en" class="openNav">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>CCV Dashboard</title>
+<!-- main style file -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.10.3/xlsx.full.min.js"></script> -->
+<script type="text/javascript"  src="{% static 'dist/js/xlsx.full.min.js' %}"></script>
+<script src="{% static 'dist/js/xlsx.full.min.js' %}"></script>
+<script  src="{% static 'dist/js/common.js' %}"></script>
+<!-- <script  src="{% static 'dist/js/xlsx.js' %}"></script> -->
+<!-- <script  src="{% static 'dist/js/jszip.js' %}"></script> -->
+<!-- <script  src="{% static 'dist/js/jquery.min.js' %}"></script> -->
+<!-- <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script> -->
+<script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+<!-- <script src="{% static 'dist/js/drag_drop_script.js' %}"></script> -->
+<script>var csrftoken = '{{csrf_token}}';</script>
+<!--  <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/js/all.min.js"
+      integrity="sha512-jAu66pqHWWQ564NS+m2Zxe13Yek98R7JWNjQLzW+PQ4i2jsMxBT1nGrQ0gFUIVJ4kPkEFe5gelBWNEDTBqmn/w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script> -->
+<!-- main style file -->
+
+
+
+
+<!-- sorting js files start here -->
+<link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet.css' %} " media="screen">
+<link rel="stylesheet" type="text/css" href="{% static 'dist/css/extrafiles/style.css' %} " media="screen">
+<!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/github-dark.css' %} " media="screen"> -->
+<!-- <script src="https://code.jquery.com/jquery-git1.min.js"></script> -->
+<script src="{% static 'dist/js/jquery-sortable-lists.js' %} "></script>
+<!-- sorting js files end here -->
+
+
+
+<!-- Bootstrap CSS start-->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+<link rel="stylesheet" href="{% static 'dist/css/custom.css' %}" />
+<link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" />
+<!-- <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css"
+      integrity="sha512-gMjQeDaELJ0ryCI+FtItusU9MkAifCZcGq789FrzkiM49D8lbDhoaUaIX4ASU187wofMNlgBJ4ckbrXM9sE6Pg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    /> -->
+<!-- Bootstrap CSS end-->
+<!-- drag and drop css added start  -->
+<link rel='stylesheet' href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css'>
+<!-- <link rel='stylesheet' href='https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css'> -->
+<link rel="stylesheet" href="{% static 'dist/css/drag_drop_style.css' %}">
+<!-- drag and drop css added end -->
+
+</head>
+
+<body class="bg-light bcst-theme">
+    <div class="primary-nav">
+<!-- open close button -->
+        <button href="#" class="hamburger open-panel nav-toggle active">
+      <span class="screen-reader-text">Menu</span>
+    </button>
+     <nav role="navigation" class="menu">
+
+            <a href="#" class="logotype">
+<!--                BSW <span>CrossDash</span>-->
+                <img src="{% static 'dist/img/bcst-logo1.png' %}" class="img-fluid mt-3">
+<!--                <img src="static/dist/">-->
+            </a>
+
+            <div class="overflow-container">
+
+                <div class="row mt-2">
+                    <div class="col-12 mb-3">
+                        <p class="text-white">Add Colum </p>
+                        <div class="bg-white p-2">
+                            <P>add here</P>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <p class="text-white">Add Row </p>
+                        <div class="bg-white p-2">
+                            <P>add here</P>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <p class="text-white">Add Other </p>
+                        <div class="bg-white p-2">
+                            <P>add here</P>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </nav>
+
+
+
+    </div>
+
+
+
+
+    <div class="new-wrapper">
+        <!--top header-->
+        <div class="bg-white sticky-top">
+            <h4 class="border-left p-3 text-primary">BrandScapes Consumer & Sales Tracker</h4>
+        </div>
+
+
+
+                 <!-- Main section start -->
+      <div id="main" class="pt-3 pb-1">
+        <div id="main-contents" class="container px-1">
+<div class="">
+            <div class="bg-white col row my-2 p-1 rounded d-flex">
+                        <div class="pl-3">
+                           <a class="nav-link fa-1x py-0 px-0 text-black" href="{% static 'download_cross_table_excel/cross_df.xlsx'%}" tabindex="-1" aria-disabled="true"
+                        download="abc.xls" title="Download">
+                        <i class="fa fa-address-book mt-1 pt-3 text-body"></i>
+                            </a>
+                        </div>
+                        <div class="pl-3">
+
+                        <i class="fa fa-line-chart mt-1 pt-3 text-body"></i>
+                        </div>
+
+                 <div class="pl-3">
+                          <div class="custom-control custom-switch pt-3 text-body">
+
+
+                  <input type="checkbox" class="custom-control-input" id="toggle-event" >
+                  <label class="custom-control-label" for="toggle-event" title="Transpose"></label>
+                  <!-- <div id="console-event"></div> -->
+               </div>
+
+                        </div>
+
+                 <div class="pl-3">
+                           <div class="form-group">
+                  <label for="example-post" class="mr-2 mb-0">Decimal</label><br>
+                  <select id="decimal_filter">
+                      <option value="0" selected>0</option>
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                  </select>
+              </div>
+               </div>
+                     <div class="pl-3">
+                          <div class="form-group">
+                  <label for="example-post" class="mr-2 mb-0">Total column</label><br>
+                  <select id="Total_column_filter">
+                      <option value="0" selected>Disable</option>
+                      <option value="1">Enable</option>
+                  </select>
+              </div>
+               </div>
+                       
+                       <div class="pl-3">
+                            <div class="form-group">
+                                <label for="example-post" class="mr-2 mb-0">Calculation Type</label><br>
+                                <select id="calculation_type" >
+                                     <option value="column_percent" selected>Column Percent</option>
+                                    <option value="row_percent" >Row Percent</option>
+                                    <option value="actual_count">Actual Count</option>
+                                    <!-- <option value="grand_total_count">Grand Total Percent</option> -->
+                                </select>
+                            </div>
+                        </div>
+                         <div class="pl-3">
+                            <div class="form-group">
+                                <label for="example-post" class="mr-2 mb-0">Weight Type</label><br>
+                                <select id="weight_type">
+                                     <option value="weighted" selected>Weighted</option>
+                                    <option value="unweighted" >Unweighted</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="pl-3"  id="weight_volume_type_div">
+                            <div class="form-group">
+                                <label for="example-post" class="mr-2 mb-0">Measure </label><br>
+                                <select id="weight_volume_type">
+                                    <!-- <option value="weighting" selected>Weighted</option> -->
+                                    <!-- <option value="Volume" >Volume</option> -->
+                                </select>
+                            </div>
+                        </div>
+               </div>
+    </div>
+          <div class="bg-white col p-3 rounded row">
+            <div class="col-12 table-responsive" style="min-height:200px; max-height: 68vh;
+    width: 99%;overflow-x: scroll;">
+    
+              <section id="cross_tab_data_table">
+                <table class="table table-striped border">
+
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">First</th>
+                      <th scope="col">Last</th>
+                      <th scope="col">Handle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Larry</td>
+                      <td>the Bird</td>
+                      <td>@twitter</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+
+
+        <!-- ======================modal 1 ====================== -->
+
+       <!-- Modal -->
+            <div class="modal" id="popup1" tabindex="-1" aria-labelledby="popup1Label" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="popup1Label">Upload Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="file" class="custom-file-input form-control-file"  id="docfile1">
+                            <button type="submit" id="Upload_data_btn" class="btn btn-light mt-2 mb-4">
+<!--                            <i class="fas fa-database"></i> -->
+                                <i class="fa fa-upload" aria-hidden="true"></i> Upload Data
+                            </button>
+                            <span  id="country_upload_file1"></span>
+                        </div>
+                        <div class="">
+                            <div class="form-group">
+                                <label for="example-post" class="mr-2 mb-0">Data Type</label><br>
+                                <select id="calculation_type" class="form-control" >
+                                     <option value="respondent" selected>Respondent</option>
+                                    <option value="response" >Response</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <!-- <button type="button" class="btn btn-primary" id="insert_data"  value="Save changes">Save changes</button> -->
+                     <input type="button" class="btn btn-primary" id="insert_data"  value="Save changes" >
+                    </div>
+                </div>
+                </div>
+            </div>
+
+
+        <!-- ==========================modal 2 ================================== -->
+         <!-- Modal -->
+  <div class="modal fade" id="popup2" tabindex="-1" role="dialog" aria-labelledby="popup2Label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="popup2Label">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            modal data
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+          <!-- <input type="button" class="btn btn-primary" id="insert_data" > -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Optional JavaScript -->
+<!-- <script  src="{% static 'dist/js/main_dashboard.js' %}"></script> -->
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script> -->
+<script  src="{% static 'dist/js/popper.min.js' %}"></script>
+<script  src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+<!-- Multi Select Css & JS Start -->
+<script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.min.js'  %}"></script>
+<link rel="stylesheet" href="{% static 'dist/css/bootstrap-multiselect.css' %}">
+<script type="text/javascript" src="{% static 'dist/js/bootstrap-multiselect.js' %}"></script>
+<!-- drag and drop js start  -->
+<script  src="{% static 'dist/js/jquery-ui.min.js'  %}"></script>
+<script  src="{% static 'dist/js/script_11.js'  %}"></script>
+<!-- drag and drop js end -->
+    <script>
+        $('.nav-toggle').click(function(e) {
+            e.preventDefault();
+            $("html").toggleClass("openNav");
+            $(".nav-toggle").toggleClass("active");
+
+        });
+
+        var ExcelToJSON = function() {
+
+      this.parseExcel = function(file) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          var data = e.target.result;
+          var workbook = XLSX.read(data, {
+            type: 'binary'
+          });
+          console.log('workbook',workbook)
+          var uploaded_data=[];
+          workbook.SheetNames.forEach(function(sheetName) {
+            // Here is your object
+            var XL_row_object = XLSX.utils.sheet_to_row_object_array(workbook.Sheets[sheetName]);
+            uploaded_data.push(XL_row_object)
+            // var json_object = JSON.stringify(XL_row_object);
+            console.log('data resp',XL_row_object);
+            // localStorage.removeItem("upload-items");
+            // localStorage.setItem('upload-items', json_object);
+
+            // STORE JSON DATA IN INNER HTML for one sheet
+            // $('#json_resp').empty();
+            // var div = document.getElementById('json_resp');
+            // div.innerHTML = json_object;
+          })
+          // new code added for 2 sheet upload dynamically start here
+           var json_object = JSON.stringify(uploaded_data);
+            $('#json_resp').empty();
+            var div = document.getElementById('json_resp');
+            div.innerHTML = json_object;
+          // new code added for 2 sheet upload dynamically end here
+          console.log(' END FUNCTION LOOP')
+          console.log('uploaded_data array',uploaded_data)
+        };
+
+        reader.onerror = function(ex) {
+          console.log(ex);
+        };
+
+        reader.readAsBinaryString(file);
+      };
+  };
+
+  function handleFileSelect(evt) {
+    var files = evt.target.files; // FileList object
+    var xl2json = new ExcelToJSON();
+    xl2json.parseExcel(files[0]);
+  }
+document.getElementById('docfile1').addEventListener('change', handleFileSelect, true);
+
+document.getElementById('Upload_data_btn').addEventListener('click', openDialog);
+function openDialog() {
+  document.getElementById('docfile1').click();
+}
+// console.log('get url',window.location.href);
+    </script>
+
+    <script>
+        $('#popup1').appendTo("body")
+        $('#popup2').appendTo("body")
+
+    </script>
+
+
+
+<script>
+    $(document).ready(function() {
+         $('#rowfilter').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+             maxHeight: 200,
+              // widthSynchronizationMode: 'ifPopupIsWider',
+            buttonWidth: '200px'
+            // buttonContainer: '<div class="btn-group w-100" />'
+        });
+          $('#basefilter').multiselect({
+            includeSelectAllOption: true,
+            enableFiltering: false,
+             maxHeight: 200,
+              dropRight: true,
+              widthSynchronizationMode: 'ifPopupIsWider',
+            buttonWidth: '200px'
+            // buttonContainer: '<div class="btn-group w-100" />'
+        });
+
+        $('#columnfilter').multiselect({
+            includeSelectAllOption: true,
+            buttonWidth: '100%',
+            dropRight: false,
+            enableFiltering: false,
+            maxHeight: 200,
+             widthSynchronizationMode: 'always',
+            buttonWidth: '200px'
+            // columns: 1,
+                // placeholder: '--Select Col Type--',
+            //     selectAll: true,
+            //     search   : true,
+            //     minHeight: 100
+        });
+    });
+</script>
+<script type="text/javascript">
+$(function()
+{
+    var options = {
+        placeholderCss: {'background-color': '#ff8'},
+        hintCss: {'background-color':'#bbf'},
+        onChange: function( cEl )
+        {
+            console.log( 'onChange' );
+        },
+        complete: function( cEl )
+        {
+            console.log( 'complete' );
+        },
+        isAllowed: function( cEl, hint, target )
+        {
+            // Be carefull if you test some ul/ol elements here.
+            // Sometimes ul/ols are dynamically generated and so they have not some attributes as natural ul/ols.
+            // Be careful also if the hint is not visible. It has only display none so it is at the previous place where it was before(excluding first moves before showing).
+            if( target.data('module') === 'c' && cEl.data('module') !== 'c' )
+            {
+                hint.css('background-color', '#ff9999');
+                return false;
+            }
+            else
+            {
+                hint.css('background-color', '#99ff99');
+                return true;
+            }
+        },
+        opener: {
+            active: true,
+            as: 'html',  // if as is not set plugin uses background image
+            close: '<i class="fa fa-minus c3"></i>',  // or 'fa-minus c3'
+            open: '<i class="fa fa-plus"></i>',  // or 'fa-plus'
+            openerCss: {
+                'display': 'inline-block',
+                //'width': '18px', 'height': '18px',
+                'float': 'left',
+                'margin-left': '-35px',
+                'margin-right': '5px',
+                //'background-position': 'center center', 'background-repeat': 'no-repeat',
+                'font-size': '1.1em'
+            }
+        },
+        ignoreClass: 'clickable'
+    };
+
+    var optionsPlus = {
+        insertZonePlus: true,
+        placeholderCss: {'background-color': '#ff8'},
+        hintCss: {'background-color':'#bbf'},
+        opener: {
+            active: true,
+            as: 'html',  // if as is not set plugin uses background image
+            close: '<i class="fa fa-minus c3"></i>',
+            open: '<i class="fa fa-plus"></i>',
+            openerCss: {
+                'display': 'inline-block',
+                'float': 'left',
+                'margin-left': '-35px',
+                'margin-right': '5px',
+                'font-size': '1.1em'
+            }
+        }
+    };
+
+    $('#sTree2').sortableLists( options );
+    $('#sTreePlus').sortableLists( optionsPlus );
+
+    $('#toArrBtn').on( 'click', function(){ console.log( $('#sTree2').sortableListsToArray() ); } );
+    $('#toHierBtn').on( 'click', function() { console.log( $('#sTree2').sortableListsToHierarchy() ); } );
+    $('#toStrBtn').on( 'click', function() { console.log( $('#sTree2').sortableListsToString() ); } );
+    $('.descPicture').on( 'click', function(e) { $(this).toggleClass('descPictureClose'); } );
+
+    $('.clickable').on('click', function(e) { alert('Click works fine! IgnoreClass stopped onDragStart event.'); });
+
+    /* Scrolling anchors */
+    $('#toPictureAnch').on( 'mousedown', function( e ) { scrollToAnch( 'pictureAnch' ); return false; } );
+    $('#toBaseElementAnch').on( 'mousedown', function( e ) { scrollToAnch( 'baseElementAnch' ); return false; } );
+    $('#toBaseElementAnch2').on( 'mousedown', function( e ) { scrollToAnch( 'baseElementAnch' ); return false; } );
+    $('#toCssPatternAnch').on( 'mousedown', function( e ) { scrollToAnch( 'cssPatternAnch' ); return false; } );
+
+    function scrollToAnch( id )
+    {
+        return true;
+        $('html, body').animate({
+            scrollTop: '-=-' + $("#" + id).offset().top + 'px'
+        }, 750);
+        return false;
+    }
+
+});
+
+
+
+</script>
+
+<!-- <script type="text/javascript">
+
+        //
+        //
+
+        var html;
+        for (var i = 1; i<5000; i++) {
+            html +=' <li class="child sub-main collapsed pl-4" data-toggle="collapse" data-target="#intro2"><a class="child" href="#">Gender_'+i+'</a></li>';
+        }
+        $('#getting2').html(html);
+
+
+        // $('#getting2')
+    </script> -->
+
+  <!--   <script type="text/javascript">
+          $('.drag').draggable({
+      appendTo: 'body',
+      helper: 'clone'
+    });
+
+       //SECTION 1  clickable
+    $('#sTreePlus').droppable({
+
+      activeClass: 'active',
+      hoverClass: 'hover',
+      accept: ":not(.ui-sortable-helper)", // Reject clones generated by sortable
+      drop: function (e, ui) {
+         alert('sTreePlus')
+        var table_name=ui.draggable[0].getAttribute("data-filename");
+        console.log('==============ss',table_name);
+        var $el = $('<li class="drop-item " id="item_b1" data-module="b" data-filename="'+table_name+'" data-value="' + ui.draggable.text() + '"><div><span id="clickable">' + ui.draggable.text() + '</span></div></li>');
+        // $el.append($('<button type="button" onclick="myFunction()" class="btn btn-default btn-xs remove "><i class="fa fa-minus-square" aria-hidden="true"></i></button>').click(function () { $(this).parent().detach(); }));
+        $(this).append($el);
+        // console.log('Table section',e);
+        var Row_array_data=$('#sTreePlus').sortableListsToArray();
+        var Column_array_data=$('#sTree2').sortableListsToArray();
+        find_table_name_dy(Row_array_data,Column_array_data)
+      console.log('line 201 Row_array_data',Row_array_data)
+      console.log('lline 201 Column_array_data',Column_array_data)
+
+
+      }
+    }).sortable({
+      items: '.drop-item',
+      sort: function() {
+        // gets added unintentionally by droppable interacting with sortable
+        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+        $( this ).removeClass( "active" );
+      }
+    });
+
+   //SECTION 2
+    $('#sTree2').droppable({
+      activeClass: 'active',
+      hoverClass: 'hover',
+      accept: ":not(.ui-sortable-helper)", // Reject clones generated by sortable
+      drop: function (e, ui) {
+         alert('sTree2')
+        var table_name=ui.draggable[0].getAttribute("data-filename");
+        var $el = $('<li class="drop-item" id="item_b1" data-module="b"  data-filename="'+table_name+'" data-value="' + ui.draggable.text() + '"><div>' + ui.draggable.text() + '</div></li>');
+        // $el.append($('<button type="button" class="btn btn-default btn-xs remove"><i class="fa fa-minus-square" aria-hidden="true"></i></button>').click(function () { $(this).parent().detach(); }));
+        $(this).append($el);
+         var Row_array_data1=$('#sTreePlus').sortableListsToArray();
+        var Column_array_data1=$('#sTree2').sortableListsToArray();
+          console.log('Row_array_data Row 111',Row_array_data1)
+      console.log('length col 111',Column_array_data1)
+
+        // alert('ss')
+        find_table_name_dy(Row_array_data1,Column_array_data1)
+      }
+    }).sortable({
+      items: '.drop-item',
+      sort: function() {
+        // gets added unintentionally by droppable interacting with sortable
+        // using connectWithSortable fixes this, but doesn't allow you to customize active/hoverClass options
+        $( this ).removeClass( "active" );
+      }
+    });
+
+    </script> -->
+</body>
+ </html>

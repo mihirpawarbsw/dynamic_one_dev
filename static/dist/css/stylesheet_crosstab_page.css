@@ -1,0 +1,134 @@
+
+
+ul.text li {
+  line-height: 1.4 ;
+}
+
+/* Header, <header>
+   header   - container
+   h1       - project name
+   h2       - project description
+*/
+
+
+
+ul.text li {
+  list-style: none;
+}
+
+ul.text li:before {
+  content: ">>";
+  font-family: Monaco, "Bitstream Vera Sans Mono", "Lucida Console", Terminal, monospace;
+  font-size: 13px;
+  color: #b5e853;
+  margin-left: -37px;
+  margin-right: 21px;
+  line-height: 16px;
+}
+
+hr {
+  height: 0;
+  border: 0;
+  border-bottom: 1px dashed #b5e853;
+  color: #b5e853;
+}
+
+.cf:before, .cf:after {
+  content:"";
+  display:table;
+}
+
+.cf:after {
+  clear:both;
+}
+
+.cf {
+  zoom:1;
+}
+
+/* My addition to github theme */
+
+html, body, ul, li { margin:0; padding:0; }
+
+ul, li {
+	list-style-type:none;
+	color:#b5e853;
+	/* border:1px solid #3f3f3f; */
+}
+
+
+li div {
+	padding:7px;
+	background-color:#56ace6;
+  color: white;
+/*  background-color:#222;*/
+}
+
+li, ul, div { border-radius: 3px; }
+
+.c1 { color:#b5e853; }
+.c2 { color:#63c0f5; }
+.c3 { color: #f77720; }
+.c4 { color: #888; }
+.c5 { color: #666667; }
+.c6 { color: #888; }
+
+.bgC1, .gray { background-color:#ccc; }
+.bgC2, .yellow { background-color:#ff8; }
+.bgC3, .red { background-color:#ff9999; }
+.bgC4, .blue { background-color:#aaaaff;}
+.bgC5, .green { background-color:#99ff99; }
+.bgC6, .gree2 { background-color:#bbffbb; }
+.bgC7, .brown { background-color:#c26b2b; }
+
+.pT20 { padding-top:20px; }
+
+.pV10 { padding-top:10px; padding-bottom:10px; }
+
+.pR { position: relative; }
+
+.t10 { top: 10px; }
+
+.dN { display:none; }
+
+.zI1000 { z-index:1000; }
+
+.small1 { font-size:0.8em; }
+.small2 { font-size:0.7em; }
+.small3 { font-size:0.6em; }
+
+.tAR { text-align:right; }
+
+.clear { clear:both; }
+
+img.descPicture {
+	display:block;
+	width:100%;
+	margin:0 7px 30px 0;
+	float:left;
+	cursor:pointer; /*transition: all 0.5s ease;*/
+}
+
+img.descPicture.descPictureClose { width:150px; }
+
+/*#sTree2,#othersection,#sTree2_c, #sTreePlus { margin:10px auto; }
+
+ul, #sTree2,#othersection, #sTree2_r, #sTree2_c, #sTreePlus { padding:0; background-color:#151515; }
+
+#sTree2 li,#othersection li,#sTree2_c li, #sTreePlus li, ul#s-l-base li {
+  padding-left:50px;
+  margin:5px; border:1px solid #3f3f3f;
+  background-color:#002466;
+/*  background-color:#3f3f3f;*/
+}*/
+
+
+#sTree2,#example2-left, #example2-right,#sTree3, #sTreePlus { margin:10px auto; }
+
+ul,#sTree2,#example2-left,#example2-right,#sTree3, #sTreePlus { padding:0; }
+
+#sTree2 li,#example2-left li,#example2-right li,#sTree3 li, #sTreePlus li, ul#s-l-base li {
+    margin: 1px;
+    border: 1px solid #8D8D8D;
+    background-color: #8D8D8D;
+}

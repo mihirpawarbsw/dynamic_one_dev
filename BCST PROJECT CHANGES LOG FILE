@@ -1,0 +1,31 @@
+BCST PROJECT CHANGES LOG FILE
+
+################## Targetted Points ############## - 
+1.	Weighted Number -  (done)
+2.	Unweighted Number -  (done)
+3.	Row% -  (done)
+4.	Column% -  (done)
+5.	Table % (done)
+6.	Indices - (done)
+7.	Sub Total - (done)
+8.	Grand Total - (done)
+9.	Column Chart - (done)
+10.	Row Nesting/Un Nesting - (done)
+11.	Column Nesting/Unnesting - (done)
+12.	Filters (done)
+
+################## Points left to be covered - 
+
+1)add header in image and pdf download 
+
+2)Significance Test (90% and 95%) – Green, Amber, and Red (done)
+3)Significance on Selected Column (done)
+
+################################## 21-06-2023 ################################################
+Significance - (done)
+
+1)Significance will be only calculated on 1x1 crosstab and on column percent only.
+2)There are two types of Significance Calculations - Total and on variable selected on user.
+ eg- if there are 3 variables - male,female and total, than the Significance will be calculated on male X total and female X total.
+ 3)Colour codes will be shown on crosstab.
+################################## 21-06-2023 ################################################

@@ -1,0 +1,434 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="openNav">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>BSS Tracker - Selection Window</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'dist/img/favicon_home.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static 'dist/js/common.js' %}"></script>
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <!-- <script src="{% static 'dist/js/drag_drop_script.js' %}"></script> -->
+  <script>var csrftoken = '{{csrf_token}}';</script>
+
+  <!-- sorting js files start here -->
+  <link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet.css' %} " media="screen">
+  <link rel="stylesheet" type="text/css" href="{% static 'dist/css/extrafiles/style.css' %} " media="screen">
+  <!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/github-dark.css' %} " media="screen"> -->
+  <!-- <script src="https://code.jquery.com/jquery-git1.min.js"></script> -->
+  <script src="{% static 'dist/js/jquery-sortable-lists.js' %} "></script>
+  <!-- sorting js files end here -->
+
+
+
+  <!-- Bootstrap CSS start-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="{% static 'dist/css/custom.css' %}" />
+  <!-- <link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" /> -->
+  <!-- <script src="{% static 'dist/js/sweetalert.min.js' %}" /> -->
+  </script>
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
+</head>
+<style>
+  :root {
+    /* Colors */
+    --brand-color: hsl(0deg 0% 100%);
+    --black: hsl(0, 0%, 0%);
+    --white: hsl(0, 0%, 100%);
+    /* Fonts */
+
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #ffffff !important;
+}
+
+  /* RESET */
+
+  /* Box sizing rules */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  .table td, .table th {
+    padding: 0.2rem 0.2rem !important;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+  /* Remove default margin */
+  body,
+  h2,
+  p {
+    margin: 0;
+  }
+
+  .logout_btn:hover {
+    background-image: linear-gradient(to right, #C3282A, #3C6BE3);
+    color: white;
+    border: none;
+    text-decoration: none;
+  }
+
+  h2 {
+    font-size: 15.4px;
+    color: var(--white);
+    line-height: 1.1;
+    text-align: center !important;
+  }
+
+  p {
+
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--white);
+  }
+
+  .flow>*+* {
+    margin-top: var(--flow-space, 1em);
+  }
+
+  /* CARD COMPONENT */
+  .card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid white !important;
+    border-radius: .25rem;
+}
+
+  .card {
+    display: grid;
+    place-items: center;
+    width: 80vw;
+    max-width: 17.875rem;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 0.625rem;
+    box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+    background-color: #595959;
+    box-shadow: 0 0 13px #000;
+  }
+
+  .card>* {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .card__background {
+    object-fit: cover;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .card__content {
+    --flow-space: 0.9375rem;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: flex-end;
+    height: 85%;
+    padding: 0.25rem 1.875rem;
+    background: #595959;
+  }
+
+  /* .card__content--container {
+  --flow-space: 1.25rem;
+} */
+
+  .card__title {
+    position: relative;
+    width: fit-content;
+    width: -moz-fit-content;
+    letter-spacing: 0px;
+    /* Prefijo necesario para Firefox  */
+  }
+
+  .card__title::after {
+    content: "";
+    position: absolute;
+    height: 0.3125rem;
+    width: calc(100% + 1.25rem);
+    bottom: calc((1.25rem - 0.5rem) * -1);
+    left: -1.25rem;
+    background-color: var(--brand-color);
+  }
+
+  .card__button {
+    /* padding: 0.75em 1.6em; */
+    width: fit-content;
+    width: -moz-fit-content;
+    font-variant: small-caps;
+    font-weight: bold;
+    border-radius: 0.45em;
+    border: none;
+    background-color: var(--brand-color);
+    font-family: var(--font-title);
+    font-size: 14px;
+    color: var(--black);
+    margin: 0px;
+
+  }
+
+  .card__button:focus {
+    outline: 2px solid black;
+    outline-offset: -5px;
+  }
+
+  @media (any-hover: hover) and (any-pointer: fine) {
+
+
+    .card__title::after {
+      opacity: 0;
+      transform: scaleX(0);
+      transition: opacity 1000ms ease-in, transform 500ms ease-out;
+      transition-delay: 500ms;
+      transform-origin: right;
+    }
+
+    .card__background {
+      transition: transform 500ms ease-in;
+    }
+
+
+
+    .card:hover,
+    .card:focus-within {
+      /* transform: scale(1.05); */
+      transition: transform 500ms ease-in;
+    }
+
+    .card:hover .card__content,
+    .card:focus-within .card__content {
+      transform: none;
+      transition: transform 500ms ease-in;
+    }
+
+    .card:focus-within .card__content {
+      transition-duration: 0ms;
+    }
+
+    .card:hover .card__background,
+    .card:focus-within .card__background {
+      transform: scale(1.3);
+    }
+
+    .card:hover .card__content--container> :not(.card__title),
+    .card:hover .card__button,
+    .card:focus-within .card__content--container> :not(.card__title),
+    .card:focus-within .card__button {
+      opacity: 1;
+      transition: opacity 500ms ease-in;
+      transition-delay: 1000ms;
+    }
+
+    .card:hover .card__title::after,
+    .card:focus-within .card__title::after {
+      opacity: 1;
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: opacity 500ms ease-in, transform 500ms ease-in;
+      transition-delay: 500ms;
+    }
+  }
+
+  .main_div {
+    height: 438px;
+  }
+
+  .zoom {
+    transition: transform .2s;
+  }
+
+  .zoom:hover {
+
+    transform: scale(1.1);
+  }
+  .main_div_bg{
+    background-image: url('static/dist/img/bg-img.jpg');
+}
+.main_bg{
+  height: 84vh;
+}
+
+.user_table_head{
+  background-color:#595959; 
+  color: white;
+}
+</style>
+
+<body class="main_div_bg bcst-theme" style="overflow-x: hidden; background-color: rgb(0 0 0 / 79%) !important;">
+
+  <div class="row header_div" style="background-color: black !important;">
+    <div class="col-2 d-flex pl-4">
+      <!-- <button href="#" class="bg-transparent hamburger nav-toggle open-panel pl-3 text-white"></button>
+      <span class="screen-reader-text">Menu</span> -->
+      <a href="#" class="logotype">
+        <!--                BSW <span>CrossDash</span>-->
+        <img src="{% static 'dist/img/bcst-logo2.png' %}" class="m-3">
+        <!--                <img src="static/dist/">-->
+      </a>
+
+    </div>
+    <div class="col-md-1">
+      <div class="ml-5 mt-1 mt-2 vl"></div>
+    </div>
+    <div class="col-md-4 mt-3 p-0">
+      <h3 class="mt-1 text-white" style="letter-spacing: -0.03em;font-size: 21px;">Dynamic View</h3>
+    </div>
+    <div class="col-md-5 d-flex justify-content-end mt-2 pt-2 px-4">
+      <p class="text-white " style="font-size: 16px !important;font-weight: 600;"> {{ request.user.username|capfirst }}
+      </p>
+      <div class="dropdown mt-0">
+        <button class="border-0 btn btn-secondary dropdown-toggle mt-xl-n2 p-0 px-4 rounded text-white" type="button"
+          data-toggle="dropdown" aria-expanded="false"
+          style="color: black; background-color: transparent !important;font-size: 30px;">
+          <i class="fa fa-user-circle-o mr-2" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu ml-4">
+          <a href="../logout"><button class="dropdown-item logout_btn logout_btn" type="button"
+              style="font-size: 13px; font-weight: 500;">Logout</button></a>
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="bg-white m-3 main_bg">
+    <div class="row">
+      <div class="col-md-12 m-3">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+          Add Users
+        </button>
+
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <!-- ... -->
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      </div>
+    </div>
+
+    <div class="row m-3">
+      <div class="col-md-12">
+        <div class="d-flex justify-content-center">
+
+        <table id="example" data-order='[[ 0, "desc" ]]' class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Sr.no</th>
+                    <th>User name</th>
+                    <th>Email</th>
+                    <th>Region</th>
+                    <th>Country</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+             <tbody>
+            <!-- Data will be dynamically inserted here -->
+            </tbody>
+        </table>
+
+
+          <!-- <table class="table table-bordered w-75">
+          <thead>
+            <tr>
+              <th scope="col" class="user_table_head">#</th>
+              <th scope="col" class="user_table_head">First</th>
+              <th scope="col" class="user_table_head">Last</th>
+              <th scope="col" class="user_table_head">Handle</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Jacob</td>
+              <td>Thornton</td>
+              <td>@fat</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Larry</td>
+              <td>the Bird</td>
+              <td>@twitter</td>
+            </tr>
+          </tbody>
+        </table> -->
+
+     
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+
+
+
+
+<script src="{% static 'dist/js/popper.min.js' %}"></script>
+<script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'dist/js/jquery-ui.min.js'  %}"></script>
+  <!-- <script src="{% static 'dist/js/dashboard.js'  %}"></script> -->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.0.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.13.7/js/dataTables.bootstrap4.min.js"></script>
+<script src="{% static 'dist/js/common.js' %}"></script>
+<script src="{% static 'dist/js/users.js' %}"></script>
+</body>
+
+</html>

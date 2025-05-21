@@ -1,0 +1,728 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="openNav">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Dynamic ONE - Selection Window</title>
+  <link rel="icon" type="image/x-icon" href="{% static 'dist/img/favicon_home.png' %}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="{% static 'dist/js/common.js' %}"></script>
+  <script src="{% static 'dist/js/adminlte.min.js' %}"></script>
+  <!-- <script src="{% static 'dist/js/drag_drop_script.js' %}"></script> -->
+  <script>var csrftoken = '{{csrf_token}}';</script>
+
+  <!-- sorting js files start here -->
+  <link rel="stylesheet" type="text/css" href="{% static 'dist/css/stylesheet.css' %} " media="screen">
+  <link rel="stylesheet" type="text/css" href="{% static 'dist/css/extrafiles/style.css' %} " media="screen">
+  <!-- <link rel="stylesheet" type="text/css" href="{% static 'dist/css/github-dark.css' %} " media="screen"> -->
+  <!-- <script src="https://code.jquery.com/jquery-git1.min.js"></script> -->
+  <script src="{% static 'dist/js/jquery-sortable-lists.js' %} "></script>
+  <!-- sorting js files end here -->
+
+
+
+  <!-- Bootstrap CSS start-->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+  <link rel="stylesheet" href="{% static 'dist/css/custom.css' %}" />
+  <!-- <link rel="stylesheet" href="{% static 'dist/css/jquery.multiselect.css' %}" /> -->
+  <!-- <script src="{% static 'dist/js/sweetalert.min.js' %}" /> -->
+  </script>
+  <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/gasparesganga-jquery-loading-overlay@2.1.7/dist/loadingoverlay.min.js"></script>
+
+</head>
+<style>
+  :root {
+    /* Colors */
+    --brand-color: hsl(0deg 0% 100%);
+    --black: hsl(0, 0%, 0%);
+    --white: hsl(0, 0%, 100%);
+    /* Fonts */
+
+  }
+
+  .table-striped tbody tr:nth-of-type(odd) {
+    background-color: #ffffff !important;
+}
+
+  /* RESET */
+
+  /* Box sizing rules */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  .table td, .table th {
+    padding: 0.2rem 0.2rem !important;
+    vertical-align: top;
+    border-top: 1px solid #dee2e6;
+}
+
+  /* Remove default margin */
+  body,
+  h2,
+  p {
+    margin: 0;
+  }
+
+  .logout_btn:hover {
+    /* background-image: linear-gradient(to right, #C3282A, #3C6BE3); */
+    background-color: #595959;
+    color: white;
+    border: none;
+    text-decoration: none;
+  }
+
+  h2 {
+    font-size: 15.4px;
+    color: var(--white);
+    line-height: 1.1;
+    text-align: center !important;
+  }
+
+  p {
+
+    font-size: 10px;
+    line-height: 1.5;
+    color: var(--white);
+  }
+
+  .flow>*+* {
+    margin-top: var(--flow-space, 1em);
+  }
+
+  /* CARD COMPONENT */
+  .card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid white !important;
+    border-radius: .25rem;
+}
+
+  .card {
+    display: grid;
+    place-items: center;
+    width: 80vw;
+    max-width: 17.875rem;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 0.625rem;
+    box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+    background-color: #595959;
+    box-shadow: 0 0 13px #000;
+  }
+
+  .card>* {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .card__background {
+    object-fit: cover;
+    max-width: 100%;
+    height: 100%;
+  }
+
+  .card__content {
+    --flow-space: 0.9375rem;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-self: flex-end;
+    height: 85%;
+    padding: 0.25rem 1.875rem;
+    background: #595959;
+  }
+
+  /* .card__content--container {
+  --flow-space: 1.25rem;
+} */
+
+  .card__title {
+    position: relative;
+    width: fit-content;
+    width: -moz-fit-content;
+    letter-spacing: 0px;
+    /* Prefijo necesario para Firefox  */
+  }
+
+  .card__title::after {
+    content: "";
+    position: absolute;
+    height: 0.3125rem;
+    width: calc(100% + 1.25rem);
+    bottom: calc((1.25rem - 0.5rem) * -1);
+    left: -1.25rem;
+    background-color: var(--brand-color);
+  }
+
+  .card__button {
+    /* padding: 0.75em 1.6em; */
+    width: fit-content;
+    width: -moz-fit-content;
+    font-variant: small-caps;
+    font-weight: bold;
+    border-radius: 0.45em;
+    border: none;
+    background-color: var(--brand-color);
+    font-family: var(--font-title);
+    font-size: 14px;
+    color: var(--black);
+    margin: 0px;
+
+  }
+
+  .card__button:focus {
+    outline: 2px solid black;
+    outline-offset: -5px;
+  }
+
+  @media (any-hover: hover) and (any-pointer: fine) {
+
+
+    .card__title::after {
+      opacity: 0;
+      transform: scaleX(0);
+      transition: opacity 1000ms ease-in, transform 500ms ease-out;
+      transition-delay: 500ms;
+      transform-origin: right;
+    }
+
+    .card__background {
+      transition: transform 500ms ease-in;
+    }
+
+
+
+    .card:hover,
+    .card:focus-within {
+      /* transform: scale(1.05); */
+      transition: transform 500ms ease-in;
+    }
+
+    .card:hover .card__content,
+    .card:focus-within .card__content {
+      transform: none;
+      transition: transform 500ms ease-in;
+    }
+
+    .style-2::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.style-2::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.style-2::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #cee0fc;
+}
+
+    .card:focus-within .card__content {
+      transition-duration: 0ms;
+    }
+
+    .card:hover .card__background,
+    .card:focus-within .card__background {
+      transform: scale(1.3);
+    }
+
+    .card:hover .card__content--container> :not(.card__title),
+    .card:hover .card__button,
+    .card:focus-within .card__content--container> :not(.card__title),
+    .card:focus-within .card__button {
+      opacity: 1;
+      transition: opacity 500ms ease-in;
+      transition-delay: 1000ms;
+    }
+
+    .card:hover .card__title::after,
+    .card:focus-within .card__title::after {
+      opacity: 1;
+      transform: scaleX(1);
+      transform-origin: left;
+      transition: opacity 500ms ease-in, transform 500ms ease-in;
+      transition-delay: 500ms;
+    }
+  }
+
+  .main_div {
+    height: 438px;
+  }
+
+  .zoom {
+    transition: transform .2s;
+  }
+
+  .zoom:hover {
+
+    transform: scale(1.1);
+  }
+  .main_div_bg{
+    background-image: url('static/dist/img/bg-img.jpg');
+}
+</style>
+
+<body class="main_div_bg bcst-theme" style="overflow-x: hidden; background-color: rgb(0 0 0 / 79%) !important;">
+
+  <div class="row header_div" style="background-color: black !important;">
+    <div class="col-2 d-flex pl-4">
+      <!-- <button href="#" class="bg-transparent hamburger nav-toggle open-panel pl-3 text-white"></button>
+      <span class="screen-reader-text">Menu</span> -->
+      <a href="#" class="logotype">
+        <!--                BSW <span>CrossDash</span>-->
+        <img src="{% static 'dist/img/bcst-logo2.png' %}" class="m-3">
+        <!--                <img src="static/dist/">-->
+      </a>
+
+    </div>
+    <div class="col-md-1">
+      <div class="ml-5 mt-1 mt-2 vl"></div>
+    </div>
+    <div class="col-md-4 mt-3 p-0">
+      <h3 class="mt-1 text-white" style="letter-spacing: -0.03em;font-size: 21px;">Dynamic ONE</h3>
+    </div>
+    <div class="col-md-5 d-flex justify-content-end mt-2 pt-2 px-4">
+      <p class="text-white " style="font-size: 16px !important;font-weight: 600;"> {{ request.user.username|capfirst }}
+      </p>
+      <div class="dropdown mt-0">
+        <button class="border-0 btn btn-secondary dropdown-toggle mt-xl-n2 p-0 px-4 rounded text-white" type="button"
+          data-toggle="dropdown" aria-expanded="false"
+          style="color: black; background-color: transparent !important;font-size: 30px;">
+          <i class="fa fa-user-circle-o mr-2" aria-hidden="true"></i>
+        </button>
+        <div class="dropdown-menu ml-4">
+          <a href="../logout"><button class="dropdown-item logout_btn logout_btn" type="button"
+              style="font-size: 13px; font-weight: 500;"><i class="fa fa-sign-out pr-2" aria-hidden="true"></i>Logout</button></a>
+              <!--  <a href="http://apps.brand-scapes.com/onedashboard/logout"><button class="dropdown-item logout_btn logout_btn" type="button"
+              style="font-size: 13px; font-weight: 500;"><i class="fa fa-sign-out pr-2" aria-hidden="true"></i>Logout</button></a> -->
+
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12  mt-2">
+        <div class="alert alert-dismissible alert-warning bg-white border-white d-flex fade mb-2 p-0 p-2 pl-0 show" role="alert">
+          <i class="fa fa-bell px-3 mt-2" aria-hidden="true" style="font-size: 10px;margin-top: 10px;"></i><strong
+            style="font-size: 10px;margin-top: 6px;" class="">If the data is not loading, please click the reload button or use a different browser
+            (e.g. Microsoft Edge). </strong>
+          <div class="ml-auto mx-4 mx-5 px-3 text-right">
+            <a href="javascript: location. reload();" type="button" class="bg-light btn btn-warning p-1 px-3 shadow"
+              style="font-size: 10px;color: #856404;border-color: #0d6efd;">Reload this page</a>
+          </div>
+          <button type="button" class="close pt-2 shadow" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mx-3 p-4 pt-lg-2 rounded">
+   
+    <div class="row">
+      <div class="col-md-8">
+        <p class="font-weight-bold" style="color: white;font-size:14px;">The tables below indicates if the quarterly BR report data has been uploaded into the respective databases.</p>
+      </div>
+      <div class="col-md-4 text-right">
+        <p class="font-italic font-weight-bold" style="color: white;">Latest data will be uploaded into the platform once it is made available.<br>Data includes latest quarter + previous 3 years.</p>
+      </div>
+    </div>
+    <div class="mt-1 row">
+      <div class="col-md-4 justify-content-end" style="border-right: 3px dashed #ffffff;">
+        <div class="d-flex justify-content-lg-around style-2" id="Multichannel_table" style="height: 30vh;overflow: scroll;overflow-x: hidden;">
+        </div>
+        <hr size="10" style="background: #0b80a1;width: 100%;border-radius: 10px;">
+        <!-- <div class="align-content-center">
+          <button type="button" class="btn btn-success p-1 shadow" style="font-size: 10px;">Q1 2024</button>
+          <button type="button" class="btn btn-success p-1 mt-3 shadow" style="font-size: 10px;">Q2 2024</button>
+        </div> -->
+        <div class="d-flex justify-content-lg-around mt-4">
+          <article class="card zoom">
+            <div class="card__content | flow">
+              <div class="card__content--container | flow">
+                <h2 class="card__title">Multichannel</h2>
+                <p class="card__description">
+                  Provides detailed channel breakdown for both B&M and EC.
+                </p>
+  <!-- abc -->
+                <!-- <div class="d-flex justify-content-center">
+                  <button type="button" class="btn btn-success p-1 shadow mt-3" data-toggle="modal" data-target="#Multichannel" style="font-size: 10px;">
+                    Data Availability
+                  </button>
+                </div> -->
+        
+                
+                
+                <!-- <div class="d-flex justify-content-center mt-4">
+                  <button type="button" class="btn btn-success p-1" style="font-size: 10px;">Q1 2024</button>
+                  <button type="button" class="btn btn-success p-1 mx-3" style="font-size: 10px;">Q2 2024</button>
+                </div> -->
+              </div>
+              <a href="/main_dashboard/?type=Multichannel" type="button"
+                class="btn btn-primary m-auto shadow text-center w-50" style="background: #0d6efd;color: white;
+              font-weight: 900;">Go <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i></a>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <div class="col-md-4"  style="border-right: 3px dashed #ffffff;">
+        <div class="d-flex justify-content-center style-2" id="Sales_table"  style="height: 30vh;overflow: scroll;overflow-x: hidden;">
+        </div>
+        <hr size="10" style="background: #0b80a1;width: 100%;border-radius: 10px;">
+        <div class="d-flex justify-content-center mt-4">
+          <article class="card zoom">
+            <div class="card__content | flow">
+              <div class="card__content--container | flow">
+                <h2 class="card__title">SKU</h2>
+                <p class="card__description">
+                  Provides SKU level breakdown by segments.
+                </p>
+              </div>
+              <a href="/main_dashboard/?type=Sales" type="button" class="btn btn-primary m-auto shadow text-center w-50"
+                style="background: #0d6efd;color: white;
+              font-weight: 900;">Go <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i></a>
+            </div>
+          </article>
+        </div>
+        
+      </div>
+      <div class="col-md-4">
+        <div class="d-flex justify-content-around style-2" id="Doors_table" style="height: 30vh;overflow: scroll;overflow-x: hidden;">
+        </div>
+        <hr size="10" style="background: #0b80a1;width: 100%;border-radius: 10px;">
+        <div class="d-flex justify-content-around mt-4">
+          <article class="card zoom">
+            <div class="card__content | flow">
+              <div class="card__content--container | flow">
+                <h2 class="card__title">Doors</h2>
+                <p class="card__description">
+                  Provides data on number of doors in B&M channels.
+                </p>
+                <!-- <div class="d-flex justify-content-center">
+                  <button type="button" class="btn btn-success p-1 shadow mt-3" data-toggle="modal" data-target="#Doors" style="font-size: 10px;">
+                    Data Availability
+                  </button>
+                </div> -->
+                <!-- <div class="d-flex justify-content-center mt-4">
+                  <button type="button" class="btn btn-success p-1" style="font-size: 10px;">Q1 2024</button>
+                  <button type="button" class="btn btn-success p-1 mx-3" style="font-size: 10px;">Q2 2024</button>
+                </div> -->
+              </div>
+              <!-- href="/main_dashboard/?type=Doors" -->
+              <a href="/main_dashboard/?type=Doors" type="button" class="btn btn-primary m-auto shadow text-center w-50"
+                style="background: #0d6efd;color: white;
+              font-weight: 900;">Go <i class="fa fa-arrow-right ml-2" aria-hidden="true"></i></a>
+            </div>
+          </article>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- Multichannel modal start -->
+    <div class="modal fade" id="Multichannel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Multichannel Data Availability</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="bg-info text-white">
+                  <th scope="col">Market</th>
+                  <th scope="col">Multichannel</th>
+                  <!-- <th scope="col">Sales</th>
+                  <th scope="col">Doors</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">Indonesia</td>
+                  <td>Q1 2024</td>
+                  <!-- <td>Q1 2024</td>
+                  <td>Q1 2024</td> -->
+                </tr>
+                <tr>
+                  <td scope="row">Korea</td>
+                  <td>Q2 2024</td>
+                  <!-- <td>Q2 2024</td>
+                  <td>Q2 2024</td> -->
+                </tr>
+                <tr>
+                  <td scope="row">Malaysia</td>
+                  <td>Q1 2024</td>
+                  <!-- <td>Q1 2024</td>
+                  <td>Q1 2024</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary p-1" data-dismiss="modal" style="font-size: 10px;">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Multichannel modal end -->
+
+    <!-- Sales modal start -->
+    <div class="modal fade" id="Sales" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Sales Data Availability</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="bg-info text-white">
+                  <th scope="col">Market</th>
+                  <!-- <th scope="col">Multichannel</th> -->
+                   <th scope="col">Sales</th>
+                  <!-- <th scope="col">Doors</th> -->
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">Indonesia</td>
+                  <!-- <td>Q1 2024</td> -->
+                  <td>Q1 2024</td>
+                  <!-- <td>Q1 2024</td> -->
+                </tr>
+                <tr>
+                  <td scope="row">Korea</td>
+                  <!-- <td>Q2 2024</td> -->
+                  <td>Q2 2024</td>
+                  <!-- <td>Q2 2024</td> -->
+                </tr>
+                <tr>
+                  <td scope="row">Malaysia</td>
+                  <!-- <td>Q1 2024</td> -->
+                  <td>Q1 2024</td>
+                  <!-- <td>Q1 2024</td> -->
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary p-1" data-dismiss="modal" style="font-size: 10px;">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Sales modal end -->
+
+    <!-- Doors modal start -->
+    <div class="modal fade" id="Doors" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Doors Data Availability</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="bg-info text-white">
+                  <th scope="col">Market</th>
+                  <!-- <th scope="col">Multichannel</th> -->
+                   <!-- <th scope="col">Sales</th> -->
+                  <th scope="col">Doors</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td scope="row">Indonesia</td>
+                  <!-- <td>Q1 2024</td> -->
+                  <!-- <td>Q1 2024</td> -->
+                  <td>Q1 2024</td>
+                </tr>
+                <tr>
+                  <td scope="row">Korea</td>
+                  <!-- <td>Q2 2024</td> -->
+                  <!-- <td>Q2 2024</td> -->
+                  <td>Q2 2024</td>
+                </tr>
+                <tr>
+                  <td scope="row">Malaysia</td>
+                  <!-- <td>Q1 2024</td> -->
+                  <!-- <td>Q1 2024</td> -->
+                  <td>Q1 2024</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary p-1" data-dismiss="modal" style="font-size: 10px;">Close</button>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Doors modal end -->
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+  <script src="{% static 'dist/js/popper.min.js' %}"></script>
+  <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'dist/js/jquery-ui.min.js'  %}"></script>
+  <!-- <script  src="{% static 'dist/js/dashboard_13_09_2023_bk.js'  %}"></script> -->
+  <script src="{% static 'dist/js/dashboard.js'  %}"></script>
+
+
+</body>
+<script type="text/javascript">
+  $(document).ready(function(){
+     $.LoadingOverlay("show"); 
+     adduseractivity();
+    setTimeout(function () { 
+      var csrfmiddlewaretoken=csrftoken;
+      var checkData = {
+                'csrfmiddlewaretoken': csrfmiddlewaretoken,
+            };
+    var resps = autoresponse("marketwise_latest_quarter", checkData);
+    // console.log('resps-->',resps)
+$.each(resps['data'], function (key, val) {
+  var html='';
+  html +='<table class="table table-striped table-bordered rounded shadow-sm mb-0">';
+  html +='<thead style="position: relative;z-index: 99999999999;bottom: 1px;">';
+  html +='<tr style="background:#595959;color: white;position:fixed;">';
+  //  html +='<th scope="col">'+val['columns'][0]+'</th>';
+  // html +='<th scope="col">'+val['columns'][1]+'</th>';
+  // html +='<th scope="col">'+val['columns'][2]+'</th>';
+  // html +='<th scope="col" class="text-center">Market</th>';
+  
+  var width_style2 = ['300px', '87px'];
+  var width_style3 = ['246px', '71px', '70px'];
+  var width_style4 = ['208px', '60px', '59px', '59px'];
+  var width_style5 = ['181px', '51px', '52px', '51px', '51px'];
+
+  // Assuming `val['columns']` is an array
+  var column_length = val['columns'].length;
+  console.log('column---> 648', val['columns']);
+  console.log('column---> 648 length', column_length);
+
+  // Create an array of available width styles
+  var width_styles = {
+    2: width_style2,
+    3: width_style3,
+    4: width_style4,
+    5: width_style5
+  };
+
+  // Get the appropriate width style array based on the column length
+  var current_width_style = width_styles[column_length];
+
+  $.each(val['columns'], function (col_key, col_val) {
+    // Get the specific width for the column
+    var get_css_width = current_width_style[col_key];
+
+    console.log('get_css_width-->', get_css_width);
+
+    // Append HTML with the correct width style
+    html += '<th scope="col" class="text-center" style="width:' + get_css_width + '">' + col_val.replace('Consolidated', '').replace('Marketwise', '').replace('Trailing', '') + '</th>';
+  });
+
+
+  html +='</tr>';
+  html +='</thead>';
+  html +='<tbody style="position: relative;top: 22px;z-index:-1;">';
+
+
+
+  
+    // console.log('key------------>',key)
+    $.each(val['data'], function (key1, val1) {
+    
+
+      html +='<tr style="background: #ffffff;">';
+      $.each(val1, function (key11, val11) {
+        if (key11!=0) {
+          var class_name='text-center'
+        }else{
+          var class_name='text-left'
+        }
+
+
+        if (val11=='Yes') {
+            var icon='<i class="fa fa-check text-success" aria-hidden="true"></i>';
+          }else if(val11=='No'){
+            var icon='<i class="fa fa-times text-danger" aria-hidden="true"></i>';
+          }else{
+            var icon=val11
+          }
+
+        html +='<th scope="row" class="'+class_name+'">'+icon+'</th>';
+       
+      });
+       html +='</tr>';
+    });
+
+
+  html +='</tbody>';
+  html +='</table>';
+
+  $('#'+key+'_table').html(html);
+  // $('#Sales_table').html(html);
+  // $('#Doors_table').html(html);
+  });
+  $.LoadingOverlay("hide",true);
+    },200);
+  });
+</script>
+</html>
+<!-- <p>rechecking</p> -->

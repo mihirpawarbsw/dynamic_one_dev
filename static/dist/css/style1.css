@@ -1,0 +1,103 @@
+.select-container {
+  display: inline-block;
+  background-color: #fff;
+  border: 1px solid #aaa;
+  border-radius: 4px 4px 0 0;
+  height: 34px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.selection-detail-container {
+    display: block;
+    line-height: 30px;
+    padding-left: 20px;
+    height: 100%;
+  }
+  
+  .select-placeholder {
+    color: #999;
+    display: inline;
+  }
+  
+  .selected-text {
+    color: #000;
+    font-weight: 600;
+  }
+  
+  .select2-selection__arrow {
+    height: 261px;
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    width: 20px;
+}
+
+.select2-selection__arrow b {
+  border-color: #888 transparent transparent;
+    border-style: solid;
+    border-width: 6px 5px 0;
+    height: 0;
+    margin-left: -4px;
+    margin-top: -2px;
+    position: absolute;
+    top: 85%;
+    width: 0;
+}
+
+.hide {
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.dropdown-container {
+  border: 1px solid #aaa;
+  border-top: transparent;
+  padding: 10px;
+}
+
+.search-result {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-container .search-box {
+   height: 30px;
+    width: 100%;
+   box-sizing: border-box;
+   padding: 5px;
+}
+
+.search-results-list {
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  list-style: none;
+}
+
+.search-results-list li:hover {
+  background-color: #5897fb;
+    color: #fff;
+}
+
+.search-results-list li{
+  padding: 6px;
+}
+
+/*.delete-selected-text {
+  position: absolute;
+  right: 30px;
+  cursor: pointer;
+}*/
+
+.render-selected-text .select-placeholder {
+  display: none;
+}
+
+/*#################################################################################*/
+/*##########body css start*/
+
+/*##########body css end*/
