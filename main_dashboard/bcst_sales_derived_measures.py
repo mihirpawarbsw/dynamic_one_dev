@@ -3,13 +3,9 @@ import json
 import os
 import subprocess
 import warnings
-
 import polars as pl
-
 from matplotlib import pyplot as plt
-
 warnings.filterwarnings('ignore')
-# import pandasql as ps
 import numpy
 import pandas as pd
 import numpy as np
@@ -18,186 +14,10 @@ import time
 from scipy import stats
 import time
 from itertools import combinations
-
 import openpyxl
 from openpyxl.worksheet.dimensions import ColumnDimension, DimensionHolder
 from openpyxl.utils import get_column_letter
 from main_dashboard.bcst_sales_data_constants import *
-
-# from bcst_sales_crosstab_calculation_functions import *
-# from bcst_sales_crosstab_calculation_seperated_functions import *
-# from bcst_sales_crosstab_table_resp import *
-# from bcst_sales_response_functions import *
-
-# PYTHONPATH = r"C:\Users\MihirPawar\Desktop\Python Project BSW\Python Files1\ccv_tool\ccv_survey_data\electrolux\\"
-# PYTHONPATH = r"C:\Mihir_Python_Projects\BCST_Tool_Core_Python_Logic\ccv_tool_Sales\BCST_Sales_Data\\"
-
-# rename_input_cols_dict = {'Volume_Sales':'Volume','YA_(Volume_Sales)':'Volume YA','PP_(Volume_Sales)':
-#                           'Volume PP','Value_Sales_(JPY)':'Value (JPY)','YA_(Value_Sales_(JPY))':'Value YA (JPY)','PP_(Value_Sales_(JPY))':
-#                           'Value PP (JPY)','TDP_TY':'TDP TY','YA_(TDP_TY)':'TDP YA','PP_(TDP_TY)':'TDP PP','Wtd_Dist_(Max)':'WD',
-#                           'PP_(Wtd_Dist_(Max))':'WD PP','YA_(Wtd_Dist_(Max))':'WD YA'}
-
-rename_input_cols_dict = {'Volume':'Volume','Volume_YA':'Volume YA','Volume_PP':
-                          'Volume PP','Sales_(JPY)':'Sales (JPY)','Sales_YA_(JPY)':'Sales YA (JPY)','Sales_PP_(JPY)':
-                          'Sales PP (JPY)','TDP_TY':'TDP TY','TDP_YA':'TDP YA','TDP_PP':'TDP PP','WD':'WD',
-                          'WD_PP':'WD PP','WD_YA':'WD YA',
-                          'ND':'ND',
-                          'ND_PP':'ND PP','ND_YA':'ND YA'}
-#
-derived_metrics_grouping_key_val_full = {'Volume':['Volume','Volume YA', 'Volume PP','Volume Share',
-                            'Volume Share YA', 'Volume Share PP', 'Volume Growth vs YA','Volume Growth vs PP',
-                            'Volume Share bps Chg. vs YA', 'Volume Share bps Chg. vs PP'],
-
-                            'Sales':['Sales (JPY)','Sales YA (JPY)','Sales PP (JPY)','Sales Share',
-                            'Sales Share YA', 'Sales Share PP', 'Sales Growth vs YA','Sales Growth vs PP',
-                            'Sales Share bps Chg. vs YA', 'Sales Share bps Chg. vs PP'],
-
-                            'TDP':['TDP TY','TDP YA', 'TDP PP','TDP Share','TDP Share YA','TDP Share PP',
-                                   'TDP Growth vs YA','TDP Growth vs PP','TDP Share bps Chg. vs YA','TDP Share bps Chg. vs PP'],
-
-                            'WD':['WD','WD YA','WD PP','WD bps Chg. vs YA','WD bps Chg. vs PP'],
-                            'ND':['ND','ND YA','ND PP','ND bps Chg. vs YA','ND bps Chg. vs PP'],
-
-                            'Avg Price':['Avg Price','Avg Price YA','Avg Price PP','Avg Price Growth vs YA','Avg Price Growth vs PP'],
-
-                            'API':['API','API YA','API PP','API Chg. Vs YA','API Chg. Vs PP']}
-
-
-derived_metrics_grouping_key_val = {'Volume':['Volume','Volume YA', 'Volume PP'],
-
-                            'Sales':['Sales (JPY)','Sales YA (JPY)','Sales PP (JPY)'],
-
-                            'TDP':['TDP TY','TDP YA', 'TDP PP'],
-
-                            'WD':['WD','WD YA','WD PP'],
-                            'ND':['ND','ND YA','ND PP'],
-
-                            'Avg Price':['Avg Price','Avg Price YA','Avg Price PP'],
-
-                            'API':['API','API YA','API PP']}
-
-derived_metrics_grouping = ['Volume','Sales','TDP','WD','ND','Avg Price','API']
-
-def measures_facts_groups(selected_weight_column22,measure_selected_key_val_resp,crosstab_function_name):
-    # print('======+++++=========')
-    # print('selected_weight_column22==',selected_weight_column22)
-    # print('measure_selected_key_val_resp==',measure_selected_key_val_resp)
-    # print('crosstab_function_name==',crosstab_function_name)
-    # print('======+++++=========')
-
-    lst_measures = []
-    lst_measures_vals = []
-    dict_selected_measures_lst = {}
-
-    # val_dict_final = list(dict_table.values())[0]
-    # val_dict_final = selected_weight_column22
-
-    if crosstab_function_name == 'crosstab1':
-
-        for dict_val in selected_weight_column22:
-            # print('dict_val==', dict_val)
-
-            if dict_val in derived_metrics_grouping_key_val_full.keys():
-                # print('==dict_val 39', dict_val)
-                lst_measures.append(dict_val)
-
-                values_of_dict_val = derived_metrics_grouping_key_val_full[dict_val]
-                lst_measures_vals.extend(values_of_dict_val)
-
-                dict_selected_measures = {dict_val:values_of_dict_val}
-                # dict_selected_measures_lst.append(dict_selected_measures)
-                dict_selected_measures_lst.update(dict_selected_measures)
-
-        # print('lst_measures==', lst_measures)
-        # print('lst_measures_vals==', lst_measures_vals)
-
-    elif crosstab_function_name == 'crosstab2':
-        # print('measure_selected_key_val_resp==114',measure_selected_key_val_resp)
- 
-        measure_selected_key_val_LIST = list(measure_selected_key_val_resp.keys())
-        # print('measure_selected_key_val_LIST==',measure_selected_key_val_LIST)
-        for dict_val in measure_selected_key_val_LIST:
-            # print('dict_val==', dict_val)
-
-            if dict_val in measure_selected_key_val_resp.keys():
-                # print('==dict_val 39', dict_val)
-                lst_measures.append(dict_val)
-
-                values_of_dict_val = measure_selected_key_val_resp[dict_val]
-                lst_measures_vals.extend(values_of_dict_val)
-
-                dict_selected_measures = {dict_val:values_of_dict_val}
-                # dict_selected_measures_lst.append(dict_selected_measures)
-                dict_selected_measures_lst.update(dict_selected_measures)
-
-    # print('lst_measures 123',lst_measures)
-    # print('lst_measures_vals 124',lst_measures_vals)
-    # print('dict_selected_measures_lst 125',dict_selected_measures_lst)
-
-    return lst_measures,lst_measures_vals,dict_selected_measures_lst
-
-def add_groupings_measures(dict_table,measure_selected_key_val_resp,crosstab_function_name):
-
-    val_dict_final = list(dict_table.values())[0]
-
-    lst_measures = []
-    lst_measures_vals = []
-    dict_selected_measures_lst = {}
-
-    if crosstab_function_name == 'crosstab1':
-        for dict_val in val_dict_final:
-            # print('dict_val==', dict_val)
-
-            if dict_val in derived_metrics_grouping_key_val.keys():
-                # print('==dict_val 39', dict_val)
-                lst_measures.append(dict_val)
-
-                values_of_dict_val = derived_metrics_grouping_key_val[dict_val]
-                lst_measures_vals.extend(values_of_dict_val)
-
-                dict_selected_measures = {dict_val:values_of_dict_val}
-                # dict_selected_measures_lst.append(dict_selected_measures)
-                dict_selected_measures_lst.update(dict_selected_measures)
-
-    elif crosstab_function_name == 'crosstab2':
-        for dict_val in val_dict_final:
-            # print('dict_val==', dict_val)
-
-            if dict_val in measure_selected_key_val_resp.keys():
-                # print('==dict_val 39', dict_val)
-                lst_measures.append(dict_val)
-
-                values_of_dict_val = measure_selected_key_val_resp[dict_val]
-                lst_measures_vals.extend(values_of_dict_val)
-
-                dict_selected_measures = {dict_val:values_of_dict_val}
-                # dict_selected_measures_lst.append(dict_selected_measures)
-                dict_selected_measures_lst.update(dict_selected_measures)
-
-
-    # for item in lst_measures:
-    #     if item in val_dict_final:
-    #         val_dict_final.remove(item)
-    #         val_dict_final.extend(lst_measures_vals)
-
-    val_dict_final = [item for item in val_dict_final if item not in lst_measures]
-    val_dict_final.extend(lst_measures_vals)
-
-    # print('lst_measures---45', lst_measures)
-    # print('lst_measures_vals---52', lst_measures_vals)
-
-    key_str = ','.join([str(key) for key in dict_table.keys()])
-    # exit('edff')
-
-    # dict_table[key_str] = list(set(val_dict_final))
-    dict_table[key_str] = val_dict_final
-
-    # for key, values in dict_table.items():
-    #     unique_values = list(set(values))  # Convert values to set to remove duplicates, then back to list
-    #     dict_table[key] = unique_values
-    # print('DICT TABLE FINAL',dict_table)
-
-    return dict_table,lst_measures_vals,val_dict_final,dict_selected_measures_lst
 
 ######### BRAND SALES INDEX NEW LOGIC - 23-09-2024 ##############################
 def derived_measures_after_crosstab_seperated_logic(df_time, filtered_df,base_sales_index_colname,row_name,col_name,measure_row_column_position,cagr_power_val,brand_sales_index_value_flag):
@@ -504,6 +324,7 @@ def derived_measures_after_crosstab_seperated_logic(df_time, filtered_df,base_sa
 
 ######### BRAND SALES INDEX NEW LOGIC - 23-09-2024 ##############################
 def derived_measures_after_crosstab(df_time, filtered_df,base_sales_index_colname,row_name,col_name,measure_row_column_position,cagr_power_val,brand_sales_index_value_flag):
+    print('derived_measures_after_crosstab starts..')
     start_derived_fn = time.time()
     # print('start time-',start_derived_fn)
     ####################################### Sales ##########################################
@@ -537,10 +358,9 @@ def derived_measures_after_crosstab(df_time, filtered_df,base_sales_index_colnam
 
             ######################### BRAND SALES INDEX - 20-09-2024 #################################
             ######################### BRAND SALES INDEX - 20-09-2024 #################################
+            print('base_sales_index_colname==',base_sales_index_colname)
             df_time_bsi = df_time.copy()
             base_index_colname_df = df_time_bsi[df_time_bsi.index.get_level_values(1) == base_sales_index_colname]
-
-            # base_index_colname_df.to_excel('base_index_colname_df.xlsx')
 
             # print('df_time_bsi----285')
             sales_base_index_colname_val = base_index_colname_df[sales_col_cy].values[0]
@@ -868,8 +688,7 @@ def derived_measures_after_crosstab(df_time, filtered_df,base_sales_index_colnam
 
     df_time_all = pd.concat(df_time_lst,axis=1)
     end_derived_fn = time.time()
-    # print('end time-',end_derived_fn)
-    # print('time taken to run derived function-',end_derived_fn - start_derived_fn," seconds!")
-    # df_time_all.to_excel('df_time_all.xlsx')
+    print('end time-',end_derived_fn)
+    print('time taken to run derived function-',end_derived_fn - start_derived_fn," seconds!")
     return df_time_all
 ######### BRAND SALES INDEX NEW LOGIC - 23-09-2024 ##############################

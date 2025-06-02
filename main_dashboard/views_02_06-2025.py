@@ -2336,6 +2336,8 @@ def crosstab_table_page2(request):
 
             selected_weight_column_all = [column_name for column_name in column_list if any(substring in column_name for substring in selected_weight_column22)]
 
+            ###########################################################################################
+
             ####################### added on 24-06-2024 ################################################
             if 'Brand sales index' in base_filter_col_lst:
                 val_selected_brand_sales = dict_base_filter_data['Brand sales index']
@@ -2346,126 +2348,105 @@ def crosstab_table_page2(request):
             else:
                 base_sales_index_colname = ''
 
-            ######################### NEW CODE - 02-06-2025 #################################
-            df_BSI_filtered1 = df.copy()
+            # NEW CODE TO EMPTY DF IF BRAND SALES INDEX AND SELECTED BRANDS ARE NOT MATCHING ########
+            if ((measure_row_column_position == 'measure_in_column') and (len(row_name) == 1) and ((brand_var_name in row_name))) and ('Brand sales index' in base_filter_col_lst) and ('Brand' in base_filter_col_lst):
+                val_selected_brand_sales = dict_base_filter_data['Brand sales index']
+                val_selected_brand_sales = val_selected_brand_sales[0]
+
+                ######################## new code 30-05-2025 #######################
+                dict_base_filter_data_BSI = dict_base_filter_data.copy()
+                dict_base_filter_data_BSI.pop('Brand', None)
+                df_BSI_filtered1 = df.copy()
+                df_BSI_filtered1 = base_filter_data(df_BSI_filtered1,dict_base_filter_data_BSI)
+                print('uniqwewewe 2360-',list(df_BSI_filtered1['Brand'].unique()))
+                # exit('rerawr!')
+                ######################## new code 30-05-2025 #######################
+                if val_selected_brand_sales not in list(df_BSI_filtered1['Brand'].unique()):
+
+                    ######################## new code 30-05-2025 #######################
+                    selected_bsi_brand = df[df['Brand'] == val_selected_brand_sales]
+                    df = pd.concat([df_BSI_filtered1, selected_bsi_brand], ignore_index=True)
+                    ######################## new code 30-05-2025 #######################
+                    # dict_base_filter_data["Brand"].append(val_selected_brand_sales)
+                    brand_sales_index_value_flag = 'No'
+                else:
+                    brand_sales_index_value_flag = 'Yes'
+                    df = base_filter_data(df,dict_base_filter_data)
+            else:
+                brand_sales_index_value_flag = 'NA'
+
+            print('dict_base_filter_data 2371-',dict_base_filter_data)
+            all_categories_vals = base_filter_resp_all(df,dict_table,row_name,col_name)
+
+            # ADDED ON 09-10-2024 - REMOVE ROW/COLUMN FROM UNFILTERED_DF FOR GRAND TOTAL ###############
             df_UNFILTERED = df.copy()
-            dict_base_filter_data_BSI = dict_base_filter_data.copy()
-            dict_base_filter_data_BSI.pop('Brand', None)
-            dict_base_filter_data_BSI.pop('Group', None)
-            df_BSI_filtered1 = base_filter_data(df_BSI_filtered1,dict_base_filter_data_BSI)
-
-            df = base_filter_data(df,dict_base_filter_data)
-            # df.to_excel('test_df_3455345.xlsx')
-
-            ######################### NEW CODE - 02-06-2025 #################################
-            if len(df) > 0:
-            # NEW CODE TO EMPTY DF IF BRAND SALES INDEX AND SELECTED BRANDS ARE NOT MATCHING 
-                
-            #######################################################################
-            #######################################################################
-                if 'Brand sales index' in base_filter_col_lst:
-                    val_selected_brand_sales = dict_base_filter_data['Brand sales index']
-                    dict_base_filter_data["Brand sales index"] = val_selected_brand_sales
-                    df['Brand sales index'] = val_selected_brand_sales[0]
-
-                    base_sales_index_colname = val_selected_brand_sales[0]
-                else:
-                    base_sales_index_colname = ''
-
-                # NEW CODE TO EMPTY DF IF BRAND SALES INDEX AND SELECTED BRANDS ARE NOT MATCHING ########
-                if ((measure_row_column_position == 'measure_in_column') and (len(row_name) == 1) and ((brand_var_name in row_name))) and ('Brand sales index' in base_filter_col_lst) and ('Brand' in base_filter_col_lst):
-                    val_selected_brand_sales = dict_base_filter_data['Brand sales index']
-                    val_selected_brand_sales = val_selected_brand_sales[0]
-
-                    print('2378-',list(df['Brand'].unique()))
-                    if val_selected_brand_sales not in list(df['Brand'].unique()):
-                        print('2385555----')
-                        ######################## new code 30-05-2025 #######################
-                        selected_bsi_brand = df_BSI_filtered1[df_BSI_filtered1['Brand'] == val_selected_brand_sales]
-                        df = pd.concat([df, selected_bsi_brand], ignore_index=True)
-                        print('2384-',list(df['Brand'].unique()))
-                        ######################## new code 30-05-2025 #######################
-                        dict_base_filter_data["Brand"].append(val_selected_brand_sales)
-                        brand_sales_index_value_flag = 'No'
-                    else:
-                        brand_sales_index_value_flag = 'Yes'
-                        # df = base_filter_data(df,dict_base_filter_data)
-                else:
-                    brand_sales_index_value_flag = 'NA'
-
-                # print('dict_base_filter_data 2371-',dict_base_filter_data)
-                all_categories_vals = base_filter_resp_all(df,dict_table,row_name,col_name)
-
-                # ADDED ON 09-10-2024 - REMOVE ROW/COLUMN FROM UNFILTERED_DF FOR GRAND TOTAL ####
-                # if brand_sales_index_value_flag == 'NA':
-                #     df = base_filter_data(df,dict_base_filter_data)
-            #######################################################################
-
-                filtered_dict_base_filter_data = dict_base_filter_data.copy()
-                if measure_row_column_position == 'measure_in_column':
+            if brand_sales_index_value_flag == 'NA':
+                df = base_filter_data(df,dict_base_filter_data)
+            filtered_dict_base_filter_data = dict_base_filter_data.copy()
+            if measure_row_column_position == 'measure_in_column':
+                for key in row_name:
+                    filtered_dict_base_filter_data.pop(key, None)
+            elif measure_row_column_position == 'measure_in_row':
+                if (len(row_name) == 1 and len(col_name) == 0):
                     for key in row_name:
                         filtered_dict_base_filter_data.pop(key, None)
-                elif measure_row_column_position == 'measure_in_row':
-                    if (len(row_name) == 1 and len(col_name) == 0):
-                        for key in row_name:
-                            filtered_dict_base_filter_data.pop(key, None)
-                    elif (len(row_name) == 1 and len(col_name) == 1):
-                        for key in col_name:
-                            filtered_dict_base_filter_data.pop(key, None)
+                elif (len(row_name) == 1 and len(col_name) == 1):
+                    for key in col_name:
+                        filtered_dict_base_filter_data.pop(key, None)
 
-                try:
-                    df_UNFILTERED = base_filter_data(df_UNFILTERED,filtered_dict_base_filter_data)
-                except:
-                    pass
-                ########################## ADDED ON 09-10-2024 - REMOVE ROW/COLUMN FROM UNFILTERED_DF FOR GRAND TOTAL #############################################
+            try:
+                df_UNFILTERED = base_filter_data(df_UNFILTERED,filtered_dict_base_filter_data)
+            except:
+                pass
+            ########################## ADDED ON 09-10-2024 - REMOVE ROW/COLUMN FROM UNFILTERED_DF FOR GRAND TOTAL #############################################
 
-                ######## CODE TO BRING BRAND AT FIRST POSITION IF PRESENT IN FILTER RESPONSE ####
-                keys_to_check = ['Brand', 'Brand sales index']
-                dicts_to_update = [(filter_dict_resp, 'filter_dict_resp'), (dict_base_filter_data, 'dict_base_filter_data')]        
-                dicts_to_update = [(all_categories_vals, 'all_categories_vals'), (dict_base_filter_data, 'dict_base_filter_data')]
+            ######## CODE TO BRING BRAND AT FIRST POSITION IF PRESENT IN FILTER RESPONSE ####
+            keys_to_check = ['Brand', 'Brand sales index']
+            dicts_to_update = [(filter_dict_resp, 'filter_dict_resp'), (dict_base_filter_data, 'dict_base_filter_data')]        
+            dicts_to_update = [(all_categories_vals, 'all_categories_vals'), (dict_base_filter_data, 'dict_base_filter_data')]
 
-                for key in keys_to_check:
-                    for d, name in dicts_to_update:
-                        if key in d:
-                            d = bring_key_to_first(d, key)
-                ######## CODE TO BRING BRAND AT FIRST POSITION IF PRESENT IN FILTER RESPONSE ####
+            for key in keys_to_check:
+                for d, name in dicts_to_update:
+                    if key in d:
+                        d = bring_key_to_first(d, key)
+            ######## CODE TO BRING BRAND AT FIRST POSITION IF PRESENT IN FILTER RESPONSE ####
 
-                ############### CODE TO ORDER CATEGORIES - 22-04-2024 #########################################
-                if (category_var_name in row_name) or (category_var_name in col_name):
-                    mapping_category_dict = {'Skincare':'01}Skincare','Make-up':'02}Make-up','Fragrance':'03}Fragrance'}
-                    df[category_var_name] = df[category_var_name].replace(mapping_category_dict)
-                    df_UNFILTERED[category_var_name] = df_UNFILTERED[category_var_name].replace(mapping_category_dict)
-                ############### CODE TO ORDER CATEGORIES - 22-04-2024 #########################################
+            ############### CODE TO ORDER CATEGORIES - 22-04-2024 #########################################
+            if (category_var_name in row_name) or (category_var_name in col_name):
+                mapping_category_dict = {'Skincare':'01}Skincare','Make-up':'02}Make-up','Fragrance':'03}Fragrance'}
+                df[category_var_name] = df[category_var_name].replace(mapping_category_dict)
+                df_UNFILTERED[category_var_name] = df_UNFILTERED[category_var_name].replace(mapping_category_dict)
+            ############### CODE TO ORDER CATEGORIES - 22-04-2024 #########################################
 
-                ############### CODE TO ORDER CHANNEL - 26-04-2024 ##############################
-                if (channel_var_name in row_name) or (channel_var_name in col_name):
-                    mapping_channel_dict = {'Department Stores':'01}Department Stores','E-Commerce':'02}E-Commerce','Specialty Stores':'03}Specialty Stores','Standalone Boutiques':'04}Standalone Boutiques'}
-                    df[channel_var_name] = df[channel_var_name].replace(mapping_channel_dict)
-                    df_UNFILTERED[channel_var_name] = df_UNFILTERED[channel_var_name].replace(mapping_channel_dict)
-                ############### CODE TO ORDER CHANNEL - 26-04-2024 #########################################
+            ############### CODE TO ORDER CHANNEL - 26-04-2024 ##############################
+            if (channel_var_name in row_name) or (channel_var_name in col_name):
+                mapping_channel_dict = {'Department Stores':'01}Department Stores','E-Commerce':'02}E-Commerce','Specialty Stores':'03}Specialty Stores','Standalone Boutiques':'04}Standalone Boutiques'}
+                df[channel_var_name] = df[channel_var_name].replace(mapping_channel_dict)
+                df_UNFILTERED[channel_var_name] = df_UNFILTERED[channel_var_name].replace(mapping_channel_dict)
+            ############### CODE TO ORDER CHANNEL - 26-04-2024 #########################################
 
-                ############### CODE TO ORDER Brand - 26-04-2024 ###########################
-                # if (brand_var_name in row_name) or (brand_var_name in col_name):
-                #     mapping_brand_dict = {'(Other panel)':'~}(Other panel)'}
-                #     df[brand_var_name] = df[brand_var_name].replace(mapping_brand_dict)
-                #     df_UNFILTERED[brand_var_name] = df_UNFILTERED[brand_var_name].replace(mapping_brand_dict)
-                ############### CODE TO ORDER Brand - 26-04-2024 ###########################
+            ############### CODE TO ORDER Brand - 26-04-2024 ###########################
+            # if (brand_var_name in row_name) or (brand_var_name in col_name):
+            #     mapping_brand_dict = {'(Other panel)':'~}(Other panel)'}
+            #     df[brand_var_name] = df[brand_var_name].replace(mapping_brand_dict)
+            #     df_UNFILTERED[brand_var_name] = df_UNFILTERED[brand_var_name].replace(mapping_brand_dict)
+            ############### CODE TO ORDER Brand - 26-04-2024 ###########################
 
-                ############ logic for CAGR - 29-08-2024 #################
-                Current_yr = int(selected_full_period[0].split()[-1])
-                Previous_yr = int(comparative_full_period[0].split()[-1])
+            ############ logic for CAGR - 29-08-2024 #################
+            Current_yr = int(selected_full_period[0].split()[-1])
+            Previous_yr = int(comparative_full_period[0].split()[-1])
 
-                selected_time_range = selected_full_period[0].split()[0]
+            selected_time_range = selected_full_period[0].split()[0]
 
-                if selected_time_range == 'FY':
-                    # print('if condition cagr')
-                    cagr_power_val = Current_yr - Previous_yr
-                    
-                else:
-                    cagr_power_val = 989898
-                ############ logic for CAGR - 29-08-2024 #################
+            if selected_time_range == 'FY':
+                # print('if condition cagr')
+                cagr_power_val = Current_yr - Previous_yr
+                
+            else:
+                cagr_power_val = 989898
+            ############ logic for CAGR - 29-08-2024 #################
 
-            # if len(df) > 0:
+            if len(df) > 0:
                 ################ ADDED BY MIHIR PAWAR - 04-08-2023 - TIME FILTER ##################
                 time_period_vals = df['Time'].unique().tolist() #distinct/unique of time periods
 

@@ -5,87 +5,41 @@ import numpy as np
 import pandas as pd
 from main_dashboard.pivot_time_period_functions import *
 
-# filepath = r"C:\Mihir_Python_Projects\BCST_Tool_Core_Python_Logic\bsw_pivot_tool\Time_period_logics\\"
-
-################## ADDED ON 18-02-2025 ##############################
-def data_transformation(data,measure_columns,selected_full_period,comparative_full_period,loop_vals_lst):
-    start_time = time.time()
-
-    df = data.copy()
-    # df.replace('#','4444',inplace=True)
-    df.fillna('Undefined', axis=0, inplace=True)
-
-    ######################## ADDED ON 03-05-2025 ###########################################
-    loop_vals_set = set(loop_vals_lst + ['Period'])  # Convert to set for O(1) lookup
-
-    # Get column dtypes once
-    dtypes = df.dtypes
-
-    # Categoricals to keep (intersection of object/category and loop_vals_set)
-    categorical_cols_to_keep = [col for col in df.columns if dtypes[col] in ['object', 'category'] and col in loop_vals_set]
-
-    # Numeric columns (not object/category)
-    numeric_cols = [col for col in df.columns if dtypes[col] not in ['object', 'category']]
-
-    # Combine
-    final_columns = numeric_cols + categorical_cols_to_keep
-
-    # Filter DataFrame
-    df = df[final_columns]
-
-    ######################## ADDED ON 03-05-2025 ###########################################
-    ###################### code to subset data  28-03-2024 #######################################
-    # numerical_columns_og = list(df.select_dtypes(include='number').columns)
-    numerical_columns_og = df.select_dtypes(include='number').columns.to_list()
-
-    numerical_columns_og.remove('Year')
-
-    drop_measure_cols = [x for x in numerical_columns_og if x not in measure_columns]
-    # print('drop_measure_cols', drop_measure_cols)
-
-    df.drop(drop_measure_cols, axis=1, inplace=True)
-    ###################### code to subset data 28-03-2024########################################
-
-    # df['Period_Year'] = df.apply(lambda row: f"{row['Period']} {row['Year']}", axis=1)
-    df['Period_Year'] = df['Period'].astype(str) + ' ' + df['Year'].astype(str)
-    # print('Period_Year',df['Period_Year'])
-
-    CY = int(selected_full_period[0].split()[-1])
-    # latest_period = selected_full_period[0].split()[1]
-    selected_time_period = selected_full_period[0].split()[0]
-
-    PY = int(comparative_full_period[0].split()[-1])
-    # comparative_period = comparative_full_period[0].split()[1]
-
-    if selected_time_period in ['MAT', 'YTD', 'QUARTER', 'HY']:
-        latest_period = selected_full_period[0].split()[1]
-        comparative_period = comparative_full_period[0].split()[1]
-
-    selected_full_period_str = '\t'.join(selected_full_period)
-    comparative_full_period_str = '\t'.join(comparative_full_period)
-
-    def get_quarters(period, year):
-        """Helper function to generate quarters based on the period and year."""
-        if period == 'H1':
-            return [f'Q1 {year}', f'Q2 {year}']
-        elif period == 'H2':
-            return [f'Q3 {year}', f'Q4 {year}']
-        elif period == 'FY':
-            return [f'Q{i} {year}' for i in range(1, 5)]
-        return [f'{period} {year}']
+def get_comparative_quarters(
+    selected_full_period_str, 
+    comparative_full_period_str, 
+    latest_period, 
+    comparative_period, 
+    CY, 
+    PY
+):
+    CY_qtrs = []
+    PY_qtrs = []
 
     if 'QUARTER' in selected_full_period_str and 'QUARTER' in comparative_full_period_str:
-        CY_qtrs = [f'{latest_period} {CY}']
-        PY_qtrs = [f'{comparative_period} {PY}']
+        cy_ytd_str = ' ' + str(CY)
+        ya_ytd_str = ' ' + str(PY)
+        CY_qtrs = [latest_period + cy_ytd_str]
+        PY_qtrs = [comparative_period + ya_ytd_str]
 
     elif 'HY' in selected_full_period_str and 'HY' in comparative_full_period_str:
-        CY_qtrs = get_quarters(latest_period, CY)
-        PY_qtrs = get_quarters(comparative_period, PY)
+        if latest_period == 'H1' and comparative_period == 'H1':
+            CY_qtrs = ['Q1 ' + str(CY), 'Q2 ' + str(CY)]
+            PY_qtrs = ['Q1 ' + str(PY), 'Q2 ' + str(PY)]
+        elif latest_period == 'H1' and comparative_period == 'H2':
+            CY_qtrs = ['Q1 ' + str(CY), 'Q2 ' + str(CY)]
+            PY_qtrs = ['Q3 ' + str(PY), 'Q4 ' + str(PY)]
+        elif latest_period == 'H2' and comparative_period == 'H1':
+            CY_qtrs = ['Q3 ' + str(CY), 'Q4 ' + str(CY)]
+            PY_qtrs = ['Q1 ' + str(PY), 'Q2 ' + str(PY)]
+        elif latest_period == 'H2' and comparative_period == 'H2':
+            CY_qtrs = ['Q3 ' + str(CY), 'Q4 ' + str(CY)]
+            PY_qtrs = ['Q3 ' + str(PY), 'Q4 ' + str(PY)]
 
     elif 'FY' in selected_full_period_str and 'FY' in comparative_full_period_str:
-        CY_qtrs = get_quarters('FY', CY)
-        PY_qtrs = get_quarters('FY', PY)
-
+        static_qtr_lst = ['Q1', 'Q2', 'Q3', 'Q4']
+        CY_qtrs = [q + ' ' + str(CY) for q in static_qtr_lst]
+        PY_qtrs = [q + ' ' + str(PY) for q in static_qtr_lst]
         latest_period = ''
         comparative_period = ''
 
@@ -96,331 +50,97 @@ def data_transformation(data,measure_columns,selected_full_period,comparative_fu
     elif 'YTD' in selected_full_period_str and 'YTD' in comparative_full_period_str:
         CY_qtrs = get_quarters_for_ytd(latest_period)
         PY_qtrs = get_quarters_for_ytd(comparative_period)
-        CY_qtrs = [f'{qtr} {CY}' for qtr in CY_qtrs]
-        PY_qtrs = [f'{qtr} {PY}' for qtr in PY_qtrs]
-   
-    mat_cy = selected_time_period + '_CY'
-    mat_ya = selected_time_period + '_YA'
+        cy_ytd_str = ' ' + str(CY)
+        ya_ytd_str = ' ' + str(PY)
+        CY_qtrs = [item + cy_ytd_str for item in CY_qtrs]
+        PY_qtrs = [item + ya_ytd_str for item in PY_qtrs]
 
-    df[mat_cy] = 0
-    df[mat_ya] = 0
+    return CY_qtrs, PY_qtrs, latest_period, comparative_period
 
-    # Update the columns based on conditions using vectorized operations
-    df.loc[df['Period_Year'].isin(CY_qtrs), mat_cy] = mat_cy
-    df.loc[df['Period_Year'].isin(PY_qtrs), mat_ya] = mat_ya
 
-    # df = df.copy()
-    df.drop(columns=['Period', 'Year'], inplace=True)
-
-    ############################ OG CODE ################################################
-    ############################ OG CODE ################################################
-    df_pivot_mat_cy = df[df[mat_cy].isin([mat_cy])]
-    df_pivot_mat_ya = df[df[mat_ya].isin([mat_ya])]
-    
-    index_columns = [col for col in df.columns if col not in measure_columns]
-    to_remove_lst1 = ['Period_Year', mat_cy, mat_ya]
-    index_columns_new1 = [col for col in index_columns if col not in to_remove_lst1]
-    # index_columns_new1 = ['Country']
-
-    df_pivot_cy = df_pivot_mat_cy.groupby(index_columns_new1)[measure_columns].sum()
-    df_pivot_cy = df_pivot_cy.reset_index()
-    df_pivot_cy['Time Period'] = mat_cy
-    # df_pivot_cy.to_excel('df_pivot_cy.xlsx')
-
-    df_pivot_ya = df_pivot_mat_ya.groupby(index_columns_new1)[measure_columns].sum()
-    df_pivot_ya = df_pivot_ya.reset_index()
-    df_pivot_ya['Time Period'] = mat_ya
-    # df_pivot_ya.to_excel('df_pivot_ya.xlsx')
-
-    df_concat_final = pd.concat([df_pivot_cy, df_pivot_ya], axis=0)
-
-    # Create a dictionary of aggregation functions for each measure column
-    agg_functions = {measure_column: 'mean' for measure_column in measure_columns}
-
-    # Groupby and aggregate using the dynamic code
-    df_pivot_final = df_concat_final.groupby(index_columns_new1 + ['Time Period']).agg(agg_functions).unstack()
-    df_pivot_final_level = df_pivot_final.copy()
-
-    df_pivot_final.columns = df_pivot_final.columns.get_level_values(0) + '_' + df_pivot_final.columns.get_level_values(
-        1)
-    ##################### NEW CODE ###################################################
-    ##################### NEW CODE ###################################################
-    # selected_time_period_str = '_' + selected_time_period
-    # print('selected_time_period_str 134', selected_time_period_str)
-    # df_pivot_final.columns = df_pivot_final.columns.str.replace(selected_time_period_str, '')
-    selected_time_period_str = f"_{selected_time_period}"
-    # print('selected_time_period_str 134', selected_time_period_str)
-    df_pivot_final.columns = df_pivot_final.columns.str.replace(selected_time_period_str, '', regex=False)
-
-    # df_pivot_final = pd.DataFrame(df_pivot_final.reset_index())
-    df_pivot_final = df_pivot_final.reset_index()
-
-    # df_pivot_final['Time'] = str(selected_time_period) + ' ' + str(latest_period) + ' ' + str(CY)
-    df_pivot_final['Time'] = f"{selected_time_period} {latest_period} {CY}"
-
-    end_time = time.time()
-    print('Time taken to transform data is', end_time - start_time, " seconds")
-
-    ############################ FILL VALUES #########################################################
-    # categorical_cols = df_pivot_final.select_dtypes(include=['object']).columns
-    # numerical_cols = df_pivot_final.select_dtypes(include=['number']).columns
-
-    # # Fill categorical columns with "Undefined"
-    # df_pivot_final[categorical_cols] = df_pivot_final[categorical_cols].fillna("Undefined")
-
-    # # Fill numerical columns with 0
-    # df_pivot_final[numerical_cols] = df_pivot_final[numerical_cols].fillna(0)
-    df_pivot_final = df_pivot_final.apply(
-    lambda col: col.fillna("Undefined") if col.dtypes == 'object' else col.fillna(0),axis=0)
-    # df_pivot_final.to_excel('df_pivot_final_COMP.xlsx')
-
-    return df_pivot_final,selected_full_period_str,comparative_full_period_str
-################## ADDED ON 18-02-2025 ##############################
-def data_transformation_OLD_18022025(data,measure_columns,selected_full_period,comparative_full_period):
+############# new optimised code ################################################
+def data_transformation(data, measure_columns, selected_full_period, comparative_full_period, loop_vals_lst):
     start_time = time.time()
 
-    # print('measure_columns 12 ',measure_columns)
-
-    #################### SELECTED VALUES ###################################################
-    # measure_columns = ['Sales (LC)', 'Sales (M JPY)']
-    # selected_full_period = ['MAT Q3 2023']
-    # comparative_full_period = ['MAT Q3 2022']
-    # static_time_periods = ['QUARTER','MAT','YTD']
-    #################### SELECTED VALUES ###################################################
-
-    # data = pd.read_csv(filepath + 'Q3_2023_for_data_upload.csv')
     df = data.copy()
-    # df['Year'] = df['Year'].astype(int)
-    # df.replace('#','4444',inplace=True)
-    df.fillna('Undefined', axis=0, inplace=True)
+    df.fillna('Undefined', inplace=True)
 
-    ###################### code to subset data  28-03-2024 #######################################
-    numerical_columns_og = list(df.select_dtypes(include='number').columns)
+    numerical_columns_og = df.select_dtypes(include='number').columns.tolist()
+    if 'Year' in numerical_columns_og:
+        numerical_columns_og.remove('Year')
 
-    numerical_columns_og.remove('Year')
+    drop_measure_cols = [col for col in numerical_columns_og if col not in measure_columns]
+    df.drop(columns=drop_measure_cols, inplace=True)
 
-    drop_measure_cols = [x for x in numerical_columns_og if x not in measure_columns]
-    # print('drop_measure_cols', drop_measure_cols)
-
-    df.drop(drop_measure_cols, axis=1, inplace=True)
-    ###################### code to subset data 28-03-2024########################################
-
-    df['Period_Year'] = df.apply(lambda row: f"{row['Period']} {row['Year']}", axis=1)
-    # print('Period_Year',df['Period_Year'])
+    df['Period_Year'] = df['Period'].astype(str) + ' ' + df['Year'].astype(str)
 
     CY = int(selected_full_period[0].split()[-1])
-    # latest_period = selected_full_period[0].split()[1]
+    PY = int(comparative_full_period[0].split()[-1])
     selected_time_period = selected_full_period[0].split()[0]
 
-    PY = int(comparative_full_period[0].split()[-1])
-    # comparative_period = comparative_full_period[0].split()[1]
-
+    latest_period = comparative_period = ''
     if selected_time_period in ['MAT', 'YTD', 'QUARTER', 'HY']:
         latest_period = selected_full_period[0].split()[1]
         comparative_period = comparative_full_period[0].split()[1]
 
     selected_full_period_str = '\t'.join(selected_full_period)
     comparative_full_period_str = '\t'.join(comparative_full_period)
-    # print('selected_full_period_str',selected_full_period_str)
-    # print('comparative_full_period_str',comparative_full_period_str)
 
-    if (('QUARTER' in selected_full_period_str) and ('QUARTER' in comparative_full_period_str)):
-        CY_qtrs = latest_period
-        PY_qtrs = comparative_period
+    CY_qtrs, PY_qtrs, latest_period, comparative_period = get_comparative_quarters(
+                                                            selected_full_period_str,
+                                                            comparative_full_period_str,
+                                                            latest_period,
+                                                            comparative_period,
+                                                            CY,
+                                                            PY
+                                                        )
 
-        # print('CY_qtrs', CY_qtrs)
-        # print('PY_qtrs', PY_qtrs)
+    mat_cy = f'{selected_time_period}_CY'
+    mat_ya = f'{selected_time_period}_YA'
 
-        cy_ytd_str = ' ' + str(CY)
-        ya_ytd_str = ' ' + str(PY)
+    df[mat_cy] = df['Period_Year'].isin(CY_qtrs)
+    df[mat_ya] = df['Period_Year'].isin(PY_qtrs)
 
-        # print('cy_ytd_str', cy_ytd_str)
-        # print('ya_ytd_str', ya_ytd_str)
-
-        CY_qtrs = [CY_qtrs + cy_ytd_str]
-        PY_qtrs = [PY_qtrs + ya_ytd_str]
-
-    elif (('HY' in selected_full_period_str) and ('HY' in comparative_full_period_str)):
-
-        if latest_period == 'H1' and comparative_period == 'H1':
-            CY_qtrs = ['Q1 ' + str(CY),'Q2 ' + str(CY)]
-            PY_qtrs = ['Q1 ' + str(PY),'Q2 ' + str(PY)]
-
-        elif latest_period == 'H1' and comparative_period == 'H2':
-            CY_qtrs = ['Q1 ' + str(CY),'Q2 ' + str(CY)]
-            PY_qtrs = ['Q3 ' + str(PY),'Q4 ' + str(PY)]
-
-        elif latest_period == 'H2' and comparative_period == 'H1':
-            CY_qtrs = ['Q3 ' + str(CY),'Q4 ' + str(CY)]
-            PY_qtrs = ['Q1 ' + str(PY),'Q2 ' + str(PY)]
-
-        elif latest_period == 'H2' and comparative_period == 'H2':
-            CY_qtrs = ['Q3 ' + str(CY),'Q4 ' + str(CY)]
-            PY_qtrs = ['Q3 ' + str(PY),'Q4 ' + str(PY)]
-
-    elif (('FY' in selected_full_period_str) and ('FY' in comparative_full_period_str)):
-        static_qtr_lst = ['Q1','Q2','Q3','Q4']
-        CY_qtrs = []
-        PY_qtrs = []
-
-        for static_qtr in static_qtr_lst:
-            cy_str = static_qtr + ' ' + str(CY)
-            py_str = static_qtr + ' ' + str(PY)
-
-            CY_qtrs.append(cy_str)
-            PY_qtrs.append(py_str)
-
-        latest_period = ''
-        comparative_period = ''
-
-    elif (('MAT' in selected_full_period_str) and ('MAT' in comparative_full_period_str)):
-        CY_qtrs = get_final_timeperiods_for_mat(latest_period, CY)
-        PY_qtrs = get_final_timeperiods_for_mat(comparative_period, PY)
-
-    elif (('YTD' in selected_full_period_str) and ('YTD' in comparative_full_period_str)):
-        CY_qtrs = get_quarters_for_ytd(latest_period)
-        PY_qtrs = get_quarters_for_ytd(comparative_period)
-
-        cy_ytd_str = ' ' + str(CY)
-        ya_ytd_str = ' ' + str(PY)
-
-        CY_qtrs = [item + cy_ytd_str for item in CY_qtrs]
-        PY_qtrs = [item + ya_ytd_str for item in PY_qtrs]
-
-    # print('CY_qtrs', CY_qtrs)
-    # print('PY_qtrs', PY_qtrs)
-
-    mat_cy = selected_time_period + '_CY'
-    mat_ya = selected_time_period + '_YA'
-
-    df[mat_cy] = df['Period_Year'].apply(lambda x: mat_cy if x in CY_qtrs else 0)
-    df[mat_ya] = df['Period_Year'].apply(lambda x: mat_ya if x in PY_qtrs else 0)
-
-    # df = df.copy()
     df.drop(columns=['Period', 'Year'], inplace=True)
 
-    ############################ OG CODE ################################################
-    ############################ OG CODE ################################################
-    df_pivot_mat_cy = df[df[mat_cy].isin([mat_cy])]
-    df_pivot_mat_ya = df[df[mat_ya].isin([mat_ya])]
-
-    # print('df_pivot_mat_cy shape', df_pivot_mat_cy.shape)
-    # print('df_pivot_mat_cy shape', df_pivot_mat_ya.shape)
-
+    # Pivot logic
     index_columns = [col for col in df.columns if col not in measure_columns]
-    to_remove_lst1 = ['Period_Year', mat_cy, mat_ya]
-    index_columns_new1 = [col for col in index_columns if col not in to_remove_lst1]
-    # index_columns_new1 = ['Country']
+    index_columns_new1 = [col for col in index_columns if col not in ['Period_Year', mat_cy, mat_ya]]
 
-    df_pivot_cy = df_pivot_mat_cy.groupby(index_columns_new1)[measure_columns].sum()
-    df_pivot_cy = df_pivot_cy.reset_index()
+    df_pivot_mat_cy = df[df[mat_cy]]
+    df_pivot_mat_ya = df[df[mat_ya]]
+
+    df_pivot_cy = df_pivot_mat_cy.groupby(index_columns_new1, observed=True)[measure_columns].sum().reset_index()
     df_pivot_cy['Time Period'] = mat_cy
-    # df_pivot_cy.to_excel('df_pivot_cy.xlsx')
 
-    df_pivot_ya = df_pivot_mat_ya.groupby(index_columns_new1)[measure_columns].sum()
-    df_pivot_ya = df_pivot_ya.reset_index()
+    df_pivot_ya = df_pivot_mat_ya.groupby(index_columns_new1, observed=True)[measure_columns].sum().reset_index()
     df_pivot_ya['Time Period'] = mat_ya
-    # df_pivot_ya.to_excel('df_pivot_ya.xlsx')
 
     df_concat_final = pd.concat([df_pivot_cy, df_pivot_ya], axis=0)
-    # df_concat_final = df_concat_final.reset_index()
 
-    # df_pivot_final = pd.pivot_table(df_concat_final, values=measure_columns, index=index_columns_new1,columns = ['Time Period'])
-    # Create a dictionary of aggregation functions for each measure column
-    agg_functions = {measure_column: 'mean' for measure_column in measure_columns}
+    agg_functions = {col: 'mean' for col in measure_columns}
 
-    # Groupby and aggregate using the dynamic code
-    df_pivot_final = df_concat_final.groupby(index_columns_new1 + ['Time Period']).agg(agg_functions).unstack()
-    df_pivot_final_level = df_pivot_final.copy()
+    df_pivot_final = df_concat_final.groupby(index_columns_new1 + ['Time Period'], observed=True).agg(agg_functions).unstack()
+    df_pivot_final.columns = df_pivot_final.columns.get_level_values(0) + '_' + df_pivot_final.columns.get_level_values(1)
+    df_pivot_final.columns = df_pivot_final.columns.str.replace(f'_{selected_time_period}', '', regex=False)
 
-    df_pivot_final.columns = df_pivot_final.columns.get_level_values(0) + '_' + df_pivot_final.columns.get_level_values(
-        1)
-    ######################### OG CODE #################################################
-    ######################### OG CODE #################################################
+    df_pivot_final = df_pivot_final.reset_index()
+    df_pivot_final['Time'] = f"{selected_time_period} {latest_period} {CY}"
 
-    ##################### NEW CODE ###################################################
-    ##################### NEW CODE ###################################################
-    # # Filter the DataFrame based on specific criteria
-    # df_pivot_mat_cy = df[df[mat_cy] == mat_cy]
-    # df_pivot_mat_ya = df[df[mat_ya] == mat_ya]
+    df_pivot_final = df_pivot_final.apply(
+        lambda col: col.fillna("Undefined") if col.dtypes == 'object' else col.fillna(0), axis=0
+    )
 
-    # print('df_pivot_mat_cy shape:', df_pivot_mat_cy.shape)
-    # print('df_pivot_mat_ya shape:', df_pivot_mat_ya.shape)
+    print('Time taken to transform data is', round(time.time() - start_time, 2), "seconds")
+    return df_pivot_final, selected_full_period_str, comparative_full_period_str
 
-    # # Identify index columns while excluding measure columns
-    # index_columns = [col for col in df.columns if col not in measure_columns]
-    # to_remove_lst1 = ['Period_Year', mat_cy, mat_ya]
-    # index_columns_new1 = [col for col in index_columns if col not in to_remove_lst1]
-
-    # # Groupby and aggregate for mat_cy
-    # df_pivot_cy = df_pivot_mat_cy.groupby(index_columns_new1)[measure_columns].sum().reset_index()
-    # df_pivot_cy['Time Period'] = mat_cy
-    # # df_pivot_cy.to_excel('df_pivot_cy.xlsx')
-
-    # # Groupby and aggregate for mat_ya
-    # df_pivot_ya = df_pivot_mat_ya.groupby(index_columns_new1)[measure_columns].sum().reset_index()
-    # df_pivot_ya['Time Period'] = mat_ya
-    # # df_pivot_ya.to_excel('df_pivot_ya.xlsx')
-
-    # # Concatenate the two DataFrames
-    # df_concat_final = pd.concat([df_pivot_cy, df_pivot_ya], axis=0)
-    # # df_concat_final.to_excel('df_concat_final.xlsx')
-
-    # # Create a dictionary of aggregation functions for each measure column
-    # agg_functions = {measure_column: 'mean' for measure_column in measure_columns}
-
-    # # Groupby and aggregate using the dynamic code
-    # df_pivot_final = df_concat_final.groupby(index_columns_new1 + ['Time Period']).agg(agg_functions).unstack()
-
-    # # Reshape the DataFrame
-    # df_pivot_final.columns = df_pivot_final.columns.get_level_values(0) + '_' + df_pivot_final.columns.get_level_values(1)
-    # # df_pivot_final.to_excel('df_pivot_final11.xlsx')
-
-    # # Optional: Reset index if needed
-    # # df_pivot_final = df_pivot_final.reset_index()
-
-    ##################### NEW CODE ###################################################
-    ##################### NEW CODE ###################################################
-    selected_time_period_str = '_' + selected_time_period
-    # print('selected_time_period_str 134', selected_time_period_str)
-    df_pivot_final.columns = df_pivot_final.columns.str.replace(selected_time_period_str, '')
-
-    df_pivot_final = pd.DataFrame(df_pivot_final.reset_index())
-
-    df_pivot_final['Time'] = str(selected_time_period) + ' ' + str(latest_period) + ' ' + str(CY)
-
-    end_time = time.time()
-    # print('Time taken to transform data is', end_time - start_time, " seconds")
-
-    ############################ FILL VALUES #########################################################
-    categorical_cols = df_pivot_final.select_dtypes(include=['object']).columns
-    numerical_cols = df_pivot_final.select_dtypes(include=['number']).columns
-
-    # Fill categorical columns with "Undefined"
-    df_pivot_final[categorical_cols] = df_pivot_final[categorical_cols].fillna("Undefined")
-
-    # Fill numerical columns with 0
-    df_pivot_final[numerical_cols] = df_pivot_final[numerical_cols].fillna(0)
-
-    # df_pivot_final.to_excel('df_pivot_final_COMP.xlsx')
-
-    return df_pivot_final,selected_full_period_str,comparative_full_period_str
-    ############################ FILL VALUES #########################################################
-
+################## ADDED ON 18-02-2025 ##############################
 def data_transformation_doors(filename,measure_columns,selected_full_period,comparative_full_period,seperator_param,loop_vals_lst):
     start_time = time.time()
     # print('measure_columns 12 ',measure_columns)
-    #################### SELECTED VALUES ###################################################
-    # measure_columns = ['Sales (LC)', 'Sales (M JPY)']
-    # selected_full_period = ['MAT Q3 2023']
-    # comparative_full_period = ['MAT Q3 2022']
-    # static_time_periods = ['QUARTER','MAT','YTD']
-    #################### SELECTED VALUES ###################################################
     transformed_data_lst = []
     for measure_columns_loop in measure_columns:
         data = pd.read_csv(settings.TEMP_UPLOAD + filename)
-        # data = pd.read_csv(filepath + 'Q3_2023_for_data_upload.csv')
-
 
         ##################### NEW LOGIC TO CONVERT MILLIONS TO THOUSANDS #############################
         if (seperator_param == "thousands"):
@@ -433,28 +153,15 @@ def data_transformation_doors(filename,measure_columns,selected_full_period,comp
         ##################### NEW LOGIC TO CONVERT MILLIONS TO THOUSANDS #############################
 
         df = data.copy()
-        # df.replace('#','4444',inplace=True)
-        df.fillna('Undefined', axis=0, inplace=True)
-
-        ######################## ADDED ON 03-05-2025 ###########################################
-        loop_vals_set = set(loop_vals_lst + ['Period'])  # Convert to set for O(1) lookup
-
-        # Get column dtypes once
+        
+        loop_vals_set = set(loop_vals_lst + ['Period'])
         dtypes = df.dtypes
 
-        # Categoricals to keep (intersection of object/category and loop_vals_set)
         categorical_cols_to_keep = [col for col in df.columns if dtypes[col] in ['object', 'category'] and col in loop_vals_set]
+        numerical_cols = [col for col in df.columns if dtypes[col] not in ['object', 'category']]
 
-        # Numeric columns (not object/category)
-        numeric_cols = [col for col in df.columns if dtypes[col] not in ['object', 'category']]
-
-        # Combine
-        final_columns = numeric_cols + categorical_cols_to_keep
-
-        # Filter DataFrame
-        df = df[final_columns]
-
-        ######################## ADDED ON 03-05-2025 ###########################################
+        df = df[numerical_cols + categorical_cols_to_keep]
+        df.fillna('Undefined', axis=0, inplace=True)
 
         ###################### code to subset data  28-03-2024 #######################################
         numerical_columns_og = list(df.select_dtypes(include='number').columns)
@@ -487,83 +194,21 @@ def data_transformation_doors(filename,measure_columns,selected_full_period,comp
 
         selected_full_period_str = '\t'.join(selected_full_period)
         comparative_full_period_str = '\t'.join(comparative_full_period)
-        # print('selected_full_period_str',selected_full_period_str)
-        # print('comparative_full_period_str',comparative_full_period_str)
 
-        if (('QUARTER' in selected_full_period_str) and ('QUARTER' in comparative_full_period_str)):
-            CY_qtrs = latest_period
-            PY_qtrs = comparative_period
-
-            # print('CY_qtrs', CY_qtrs)
-            # print('PY_qtrs', PY_qtrs)
-
-            cy_ytd_str = ' ' + str(CY)
-            ya_ytd_str = ' ' + str(PY)
-
-            # print('cy_ytd_str', cy_ytd_str)
-            # print('ya_ytd_str', ya_ytd_str)
-
-            CY_qtrs = [CY_qtrs + cy_ytd_str]
-            PY_qtrs = [PY_qtrs + ya_ytd_str]
-
-        elif (('HY' in selected_full_period_str) and ('HY' in comparative_full_period_str)):
-
-            if latest_period == 'H1' and comparative_period == 'H1':
-                CY_qtrs = ['Q1 ' + str(CY),'Q2 ' + str(CY)]
-                PY_qtrs = ['Q1 ' + str(PY),'Q2 ' + str(PY)]
-
-            elif latest_period == 'H1' and comparative_period == 'H2':
-                CY_qtrs = ['Q1 ' + str(CY),'Q2 ' + str(CY)]
-                PY_qtrs = ['Q3 ' + str(PY),'Q4 ' + str(PY)]
-
-            elif latest_period == 'H2' and comparative_period == 'H1':
-                CY_qtrs = ['Q3 ' + str(CY),'Q4 ' + str(CY)]
-                PY_qtrs = ['Q1 ' + str(PY),'Q2 ' + str(PY)]
-
-            elif latest_period == 'H2' and comparative_period == 'H2':
-                CY_qtrs = ['Q3 ' + str(CY),'Q4 ' + str(CY)]
-                PY_qtrs = ['Q3 ' + str(PY),'Q4 ' + str(PY)]
-
-        elif (('FY' in selected_full_period_str) and ('FY' in comparative_full_period_str)):
-            static_qtr_lst = ['Q1','Q2','Q3','Q4']
-            CY_qtrs = []
-            PY_qtrs = []
-
-            for static_qtr in static_qtr_lst:
-                cy_str = static_qtr + ' ' + str(CY)
-                py_str = static_qtr + ' ' + str(PY)
-
-                CY_qtrs.append(cy_str)
-                PY_qtrs.append(py_str)
-
-            latest_period = ''
-            comparative_period = ''
-
-        elif (('MAT' in selected_full_period_str) and ('MAT' in comparative_full_period_str)):
-            CY_qtrs = get_final_timeperiods_for_mat(latest_period, CY)
-            PY_qtrs = get_final_timeperiods_for_mat(comparative_period, PY)
-
-        elif (('YTD' in selected_full_period_str) and ('YTD' in comparative_full_period_str)):
-            CY_qtrs = get_quarters_for_ytd(latest_period)
-            PY_qtrs = get_quarters_for_ytd(comparative_period)
-
-            cy_ytd_str = ' ' + str(CY)
-            ya_ytd_str = ' ' + str(PY)
-
-            CY_qtrs = [item + cy_ytd_str for item in CY_qtrs]
-            PY_qtrs = [item + ya_ytd_str for item in PY_qtrs]
+        CY_qtrs, PY_qtrs, latest_period, comparative_period = get_comparative_quarters(
+                                                                selected_full_period_str,
+                                                                comparative_full_period_str,
+                                                                latest_period,
+                                                                comparative_period,
+                                                                CY,
+                                                                PY
+                                                            )
 
         if measure_columns_loop == 'Door':
             CY_qtrs = [CY_qtrs[-1]]
             PY_qtrs = [PY_qtrs[-1]]
 
             selected_time_period = 'QUARTER'
-
-            # print('doorrss cy',CY_qtrs)
-            # print('doorrss py',PY_qtrs)
-
-        # print('CY_qtrs', CY_qtrs)
-        # print('PY_qtrs', PY_qtrs)
 
         mat_cy = selected_time_period + '_CY'
         mat_ya = selected_time_period + '_YA'
